@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
 	//Start main window
 	w.show();
 	//Disable resize
-	w.setFixedSize(w.size());
+	//w.setFixedSize(w.size());
 
 	return a.exec();
 }
