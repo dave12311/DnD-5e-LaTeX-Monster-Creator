@@ -7,7 +7,7 @@ Monster::Monster(){}
 Monster::~Monster(){}
 
 void Monster::updateLatex(){
-	emit requestData();
+	emit requestListPointer();
 
 	//Begin
 	latexString = "\\begin{DndMonster}{";

@@ -7,11 +7,6 @@
 int main(int argc, char *argv[]){
 	QApplication a(argc, argv);
 	MainWindow w;
-
-	//Start main window
 	w.show();
-	//Disable resize
-	//w.setFixedSize(w.size());
-
 	return a.exec();
 }

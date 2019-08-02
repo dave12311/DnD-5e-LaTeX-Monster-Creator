@@ -2,6 +2,11 @@
 #include "ui_mainwindow.h"
 #include "monsterenum.h"
 #include <QObject>
+#include <QWidget>
+#include <QLayout>
+#include <QSpinBox>
+
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
 		ui->setupUi(this);
@@ -30,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		QObject::connect(ui->monsterChallenge,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
 
 		//Request input box data
-		QObject::connect(monster,SIGNAL(requestData()),this,SLOT(dataRequested()));
+		QObject::connect(monster,SIGNAL(requestListPointer()),this,SLOT(dataRequested()));
 
 		//Send input data
 		QObject::connect(this,SIGNAL(sendListPointer(QList<QString>*)),monster,SLOT(receiveListPointer(QList<QString>*)));
@@ -71,4 +76,115 @@ void MainWindow::dataRequested(){
 	inputData.append(ui->monsterChallenge->text());
 
 	emit sendListPointer(&inputData);
+}
+
+void MainWindow::addInnateSpellSlot(){
+	innateSpellLayouts.append(new QHBoxLayout);
+	innateSpellSpinBoxes.append(new QSpinBox);
+	innateSpellLineEdits.append(new QLineEdit);
+	int id = innateSpellLayouts.indexOf(innateSpellLayouts.last());
+
+	//Set properties
+	innateSpellSpinBoxes[id]->setToolTip("Spell recharge time in days");
+
+	//Add new layout
+	ui->innateSpellcasting->addLayout(innateSpellLayouts[id]);
+
+	//Add elements
+	innateSpellLayouts[id]->addWidget(innateSpellSpinBoxes[id]);
+	innateSpellLayouts[id]->addWidget(innateSpellLineEdits[id]);
+
+	//Scroll down
+	//Does not work if only called once?
+	QCoreApplication::processEvents();
+	QCoreApplication::processEvents();
+	ui->scrollArea->ensureWidgetVisible(innateSpellLineEdits[id]);
+
+	QObject::connect(innateSpellLineEdits[id], SIGNAL(textChanged(QString)), this, SLOT(addInnateSpellSlot()));
+	if(id>0){
+		innateSpellLineEdits[id-1]->disconnect();
+		QObject::connect(innateSpellLineEdits[id-1], SIGNAL(textChanged(QString)), this, SLOT(removeInnateSpellSlot(QString)));
+	}
+
+	if(id>1){
+		innateSpellLineEdits[id-2]->disconnect();
+	}
+}
+
+void MainWindow::removeInnateSpellSlot(QString text){
+	if(text == ""){
+		innateSpellLineEdits.last()->deleteLater();
+		innateSpellSpinBoxes.last()->deleteLater();
+		innateSpellLayouts.last()->deleteLater();
+
+		innateSpellLineEdits.removeLast();
+		innateSpellSpinBoxes.removeLast();
+		innateSpellLayouts.removeLast();
+		QObject::connect(innateSpellLineEdits.last(), SIGNAL(textChanged(QString)), this, SLOT(addInnateSpellSlot()));
+		if(innateSpellLineEdits.count()>1){
+			QObject::connect(innateSpellLineEdits.at(innateSpellLineEdits.count()-2), SIGNAL(textChanged(QString)), this, SLOT(removeInnateSpellSlot(QString)));
+		}
+	}
+}
+
+void MainWindow::addSpellSlot(){
+	spellLayouts.append(new QHBoxLayout);
+	spellComboBoxes.append(new QComboBox);
+	spellSpinBoxes.append(new QSpinBox);
+	spellLineEdits.append(new QLineEdit);
+	int id = spellLayouts.indexOf(spellLayouts.last());
+
+	//Set properties
+	QList<QString> comboItems;
+	for(int i=0;i<10;i++){
+		QString temp = QString::number(i);
+		temp.append(". level");
+
+		spellComboBoxes[id]->addItem(temp);
+	}
+
+	spellComboBoxes[id]->addItems(comboItems);
+
+	spellComboBoxes[id]->setToolTip("Spell level");
+	spellSpinBoxes[id]->setToolTip("Spell slots");
+
+	//Add new layout
+	ui->spellcasting->addLayout(spellLayouts[id]);
+
+	//Add elements
+	spellLayouts[id]->addWidget(spellComboBoxes[id]);
+	spellLayouts[id]->addWidget(spellSpinBoxes[id]);
+	spellLayouts[id]->addWidget(spellLineEdits[id]);
+
+	//Scroll down
+	//Does not work if only called once?
+	QCoreApplication::processEvents();
+	QCoreApplication::processEvents();
+	ui->scrollArea->ensureWidgetVisible(spellLineEdits[id]);
+}
+
+void MainWindow::removeSpellSlot(QString text){
+
+}
+
+void MainWindow::on_monsterInnateSpellcasting_textChanged(const QString &arg1){
+	if(arg1 != "" && innateSpellLayouts.count() == 0){
+		addInnateSpellSlot();
+	}else if(arg1 == ""){
+		while(innateSpellLayouts.count() != 0){
+			innateSpellLineEdits.last()->deleteLater();
+			innateSpellSpinBoxes.last()->deleteLater();
+			innateSpellLayouts.last()->deleteLater();
+
+			innateSpellLineEdits.removeLast();
+			innateSpellSpinBoxes.removeLast();
+			innateSpellLayouts.removeLast();
+		}
+	}
+}
+
+void MainWindow::on_monsterSpellcasting_textChanged(const QString &arg1){
+	if(arg1 != "" && spellLayouts.count() == 0){
+		addSpellSlot();
+	}
 }

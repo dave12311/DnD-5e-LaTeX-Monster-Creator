@@ -26,7 +26,7 @@ signals:
 	void sendText(QString *text);
 
 	//Request input data
-	void requestData();
+	void requestListPointer();
 };
 
 #endif // MONSTER_H

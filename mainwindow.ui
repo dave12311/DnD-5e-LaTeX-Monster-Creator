@@ -50,9 +50,9 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>0</y>
-           <width>567</width>
-           <height>507</height>
+           <y>-105</y>
+           <width>554</width>
+           <height>612</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
@@ -461,55 +461,6 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_damagevulnerabilities">
-                <property name="text">
-                 <string>Damage Vulnerabilities</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="label_damageresistances">
-                <property name="text">
-                 <string>Damage Resistances</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QLabel" name="label_damageimmunities">
-                <property name="text">
-                 <string>Damage Immunities</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QLabel" name="label_conditionimmunities">
-                <property name="text">
-                 <string>Condition Immunities</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="0">
-               <widget class="QLabel" name="label_senses">
-                <property name="text">
-                 <string>Senses</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="0">
-               <widget class="QLabel" name="label_languages">
-                <property name="text">
-                 <string>Languages</string>
-                </property>
-               </widget>
-              </item>
-              <item row="8" column="0">
-               <widget class="QLabel" name="label_challenge">
-                <property name="text">
-                 <string>Challenge</string>
-                </property>
-               </widget>
-              </item>
               <item row="1" column="1">
                <widget class="QLineEdit" name="monsterSkills">
                 <property name="maxLength">
@@ -520,6 +471,13 @@
                 </property>
                 <property name="clearButtonEnabled">
                  <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_damagevulnerabilities">
+                <property name="text">
+                 <string>Damage Vulnerabilities</string>
                 </property>
                </widget>
               </item>
@@ -536,6 +494,13 @@
                 </property>
                </widget>
               </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_damageresistances">
+                <property name="text">
+                 <string>Damage Resistances</string>
+                </property>
+               </widget>
+              </item>
               <item row="3" column="1">
                <widget class="QLineEdit" name="monsterDamageResistances">
                 <property name="maxLength">
@@ -546,6 +511,13 @@
                 </property>
                 <property name="clearButtonEnabled">
                  <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_damageimmunities">
+                <property name="text">
+                 <string>Damage Immunities</string>
                 </property>
                </widget>
               </item>
@@ -562,6 +534,13 @@
                 </property>
                </widget>
               </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="label_conditionimmunities">
+                <property name="text">
+                 <string>Condition Immunities</string>
+                </property>
+               </widget>
+              </item>
               <item row="5" column="1">
                <widget class="QLineEdit" name="monsterConditionImmunities">
                 <property name="maxLength">
@@ -572,6 +551,13 @@
                 </property>
                 <property name="clearButtonEnabled">
                  <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <widget class="QLabel" name="label_senses">
+                <property name="text">
+                 <string>Senses</string>
                 </property>
                </widget>
               </item>
@@ -588,6 +574,13 @@
                 </property>
                </widget>
               </item>
+              <item row="7" column="0">
+               <widget class="QLabel" name="label_languages">
+                <property name="text">
+                 <string>Languages</string>
+                </property>
+               </widget>
+              </item>
               <item row="7" column="1">
                <widget class="QLineEdit" name="monsterLanguages">
                 <property name="maxLength">
@@ -598,6 +591,13 @@
                 </property>
                 <property name="clearButtonEnabled">
                  <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="0">
+               <widget class="QLabel" name="label_challenge">
+                <property name="text">
+                 <string>Challenge</string>
                 </property>
                </widget>
               </item>
@@ -622,6 +622,79 @@
                <enum>Qt::Horizontal</enum>
               </property>
              </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="innateSpellcasting">
+              <item>
+               <widget class="QLabel" name="label_innateSpellcasting">
+                <property name="maximumSize">
+                 <size>
+                  <width>600</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Innate Spellcasting</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="monsterInnateSpellcasting">
+                <property name="toolTip">
+                 <string>Description</string>
+                </property>
+                <property name="maxLength">
+                 <number>1024</number>
+                </property>
+                <property name="placeholderText">
+                 <string>Foo's spellcasting ability is Charisma (spell save DC 12, +4 to hit with spell attacks).</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="spellcasting">
+              <item>
+               <widget class="QLabel" name="label_spellcasting">
+                <property name="maximumSize">
+                 <size>
+                  <width>600</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Spellcasting</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="monsterSpellcasting">
+                <property name="toolTip">
+                 <string>Description</string>
+                </property>
+                <property name="maxLength">
+                 <number>1024</number>
+                </property>
+                <property name="placeholderText">
+                 <string>Foo is a 2-nd level spellcaster. Its spellcasting ability is Charisma (spell save DC 12, +4 to hit).</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </item>
