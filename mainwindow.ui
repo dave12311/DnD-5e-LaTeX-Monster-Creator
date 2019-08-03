@@ -50,9 +50,9 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>-105</y>
+           <y>-618</y>
            <width>554</width>
-           <height>612</height>
+           <height>1147</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
@@ -91,7 +91,7 @@
                <string>Monster Type And Alignment</string>
               </property>
               <property name="maxLength">
-               <number>64</number>
+               <number>128</number>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -646,9 +646,6 @@
                 <property name="toolTip">
                  <string>Description</string>
                 </property>
-                <property name="maxLength">
-                 <number>1024</number>
-                </property>
                 <property name="placeholderText">
                  <string>Foo's spellcasting ability is Charisma (spell save DC 12, +4 to hit with spell attacks).</string>
                 </property>
@@ -686,13 +683,238 @@
                 <property name="toolTip">
                  <string>Description</string>
                 </property>
-                <property name="maxLength">
-                 <number>1024</number>
-                </property>
                 <property name="placeholderText">
                  <string>Foo is a 2-nd level spellcaster. Its spellcasting ability is Charisma (spell save DC 12, +4 to hit).</string>
                 </property>
                </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="actions">
+              <item>
+               <widget class="QLabel" name="label_actions">
+                <property name="maximumSize">
+                 <size>
+                  <width>600</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Actions</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="actions_layout1" stretch="2,5">
+                <item>
+                 <widget class="QLineEdit" name="monsterActionName1">
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="monsterActionDesc1">
+                  <property name="font">
+                   <font>
+                    <italic>true</italic>
+                   </font>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="attacks">
+              <item>
+               <widget class="QLabel" name="label_attacks">
+                <property name="maximumSize">
+                 <size>
+                  <width>600</width>
+                  <height>18</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Attacks</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QFormLayout" name="attacks_layout1">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_attackType1">
+                  <property name="text">
+                   <string>Attack Type</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="monsterAttackType1"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_attackName1">
+                  <property name="text">
+                   <string>Name</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLineEdit" name="monsterAttackName1"/>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_attackReach1">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="text">
+                   <string>Reach</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLineEdit" name="monsterAttackReach1">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_attackRange1">
+                  <property name="text">
+                   <string>Range</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_attackDistance1">
+                  <property name="text">
+                   <string>Distance</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QComboBox" name="monsterAttackDistance1"/>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QLineEdit" name="monsterAttackRange1"/>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_attackTargets1">
+                  <property name="text">
+                   <string>Targets</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QLineEdit" name="monsterAttackTargets1"/>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="label_attackModifier1">
+                  <property name="text">
+                   <string>Modifier</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="QLineEdit" name="monsterAttackModifier1"/>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="label_attackDamage1">
+                  <property name="text">
+                   <string>Damage</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="QLineEdit" name="monsterAttackDamage1"/>
+                </item>
+                <item row="8" column="0">
+                 <widget class="QLabel" name="label_attackDamageType1">
+                  <property name="text">
+                   <string>Damage Type</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="8" column="1">
+                 <widget class="QComboBox" name="monsterAttackDamageType1"/>
+                </item>
+                <item row="9" column="0">
+                 <widget class="QLabel" name="label_attackPlusDamage1">
+                  <property name="text">
+                   <string>Plus Damage</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="9" column="1">
+                 <widget class="QLineEdit" name="monsterAttackPlusDamage1"/>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="label_attackPlusDamageType1">
+                  <property name="text">
+                   <string>Plus Damage Type</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="1">
+                 <widget class="QComboBox" name="monsterPlusDamageType1"/>
+                </item>
+                <item row="11" column="0">
+                 <widget class="QLabel" name="label_attackOrDamage1">
+                  <property name="text">
+                   <string>Or Damage</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="11" column="1">
+                 <widget class="QLineEdit" name="monsterOrDamage1"/>
+                </item>
+                <item row="12" column="0">
+                 <widget class="QLabel" name="label_attackOrDamageWhen1">
+                  <property name="text">
+                   <string>Or Damage When</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="12" column="1">
+                 <widget class="QLineEdit" name="monsterOrDamageWhen1"/>
+                </item>
+                <item row="13" column="0">
+                 <widget class="QLabel" name="label_attackExtra1">
+                  <property name="text">
+                   <string>Extra</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="13" column="1">
+                 <widget class="QLineEdit" name="monsterAttackExtra1"/>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
@@ -715,6 +937,12 @@
          <size>
           <width>500</width>
           <height>500</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>800</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="html">
