@@ -27,12 +27,17 @@ private:
 	//Spells
 	QList<QHBoxLayout*> innateSpellLayouts;
 	QList<QSpinBox*> innateSpellSpinBoxes;
-	QList<QWidget*> innateSpellLineEdits;
+	QList<QLineEdit*> innateSpellLineEdits;
 
 	QList<QHBoxLayout*> spellLayouts;
 	QList<QComboBox*> spellComboBoxes;
 	QList<QSpinBox*> spellSpinBoxes;
-	QList<QWidget*> spellLineEdits;
+	QList<QLineEdit*> spellLineEdits;
+
+	//Actions
+	QList<QHBoxLayout*> actionLayouts;
+	QList<QLineEdit*> actionNames;
+	QList<QLineEdit*> actionDescriptions;
 
 public slots:
 	//Write text in the GUI
@@ -48,6 +53,10 @@ public slots:
 	void addSpellSlot();
 	void removeSpellSlot(QString text);
 
+	//Actions
+	void addActionSlot();
+	void removeActionSlot();
+
 signals:
 	//Send input data
 	void sendListPointer(QList<QString> *list);
@@ -55,6 +64,8 @@ signals:
 private slots:
 	void on_monsterInnateSpellcasting_textChanged(const QString &arg1);
 	void on_monsterSpellcasting_textChanged(const QString &arg1);
+	void on_monsterActionName1_textChanged(const QString &arg1);
+	void on_monsterActionDesc1_textChanged(const QString &arg1);
 };
 
 #endif // MAINWINDOW_H

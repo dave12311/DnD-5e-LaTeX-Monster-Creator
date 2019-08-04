@@ -50,7 +50,7 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>-618</y>
+           <y>-640</y>
            <width>554</width>
            <height>1147</height>
           </rect>
@@ -649,6 +649,9 @@
                 <property name="placeholderText">
                  <string>Foo's spellcasting ability is Charisma (spell save DC 12, +4 to hit with spell attacks).</string>
                 </property>
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
              </layout>
@@ -685,6 +688,9 @@
                 </property>
                 <property name="placeholderText">
                  <string>Foo is a 2-nd level spellcaster. Its spellcasting ability is Charisma (spell save DC 12, +4 to hit).</string>
+                </property>
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -725,6 +731,9 @@
                     <bold>true</bold>
                    </font>
                   </property>
+                  <property name="placeholderText">
+                   <string>Multiattack</string>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -733,6 +742,12 @@
                    <font>
                     <italic>true</italic>
                    </font>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Foo makes two melee attacks.</string>
+                  </property>
+                  <property name="clearButtonEnabled">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -862,7 +877,11 @@
                  </widget>
                 </item>
                 <item row="8" column="1">
-                 <widget class="QComboBox" name="monsterAttackDamageType1"/>
+                 <widget class="QComboBox" name="monsterAttackDamageType1">
+                  <property name="maxVisibleItems">
+                   <number>15</number>
+                  </property>
+                 </widget>
                 </item>
                 <item row="9" column="0">
                  <widget class="QLabel" name="label_attackPlusDamage1">
@@ -882,7 +901,11 @@
                  </widget>
                 </item>
                 <item row="10" column="1">
-                 <widget class="QComboBox" name="monsterPlusDamageType1"/>
+                 <widget class="QComboBox" name="monsterAttackPlusDamageType1">
+                  <property name="maxVisibleItems">
+                   <number>15</number>
+                  </property>
+                 </widget>
                 </item>
                 <item row="11" column="0">
                  <widget class="QLabel" name="label_attackOrDamage1">
@@ -892,7 +915,7 @@
                  </widget>
                 </item>
                 <item row="11" column="1">
-                 <widget class="QLineEdit" name="monsterOrDamage1"/>
+                 <widget class="QLineEdit" name="monsterAttackOrDamage1"/>
                 </item>
                 <item row="12" column="0">
                  <widget class="QLabel" name="label_attackOrDamageWhen1">
@@ -902,7 +925,7 @@
                  </widget>
                 </item>
                 <item row="12" column="1">
-                 <widget class="QLineEdit" name="monsterOrDamageWhen1"/>
+                 <widget class="QLineEdit" name="monsterAttackOrDamageWhen1"/>
                 </item>
                 <item row="13" column="0">
                  <widget class="QLabel" name="label_attackExtra1">
