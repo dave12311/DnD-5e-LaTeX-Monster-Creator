@@ -3,6 +3,51 @@
 
 #include <QObject>
 
+struct Spell{
+	QString name;
+	int levelIndex;
+	int num;
+};
+
+struct Action{
+	QString name;
+	QString desc;
+};
+
+struct Attack{
+	int typeIndex;
+	int distanceIndex;
+	QString name;
+	QString reach;
+	QString range;
+	QString targets;
+	QString modifier;
+	QString damage;
+	int damageTypeIndex;
+	QString plusDamage;
+	int plusDamageTypeIndex;
+	QString orDamage;
+	QString orDamageWhen;
+	QString extra;
+};
+
+class InputData{
+public:
+	QList<QString> basicData;
+
+	QString innateSpellcasting;
+	QList<Spell> innateSpells;
+
+	QString spellcasting;
+	QList<Spell> spells;
+
+	QList<Action> actions;
+
+	QList<Attack> attacks;
+
+	void clear();
+};
+
 enum monsterEnum{
 	monsterName, monsterType, monsterAC, monsterHP, monsterSpeed, monsterSTR, monsterDEX, monsterCON, monsterINT, monsterWIS, monsterCHA,
 	monsterSavingThrows, monsterSkills, monsterDamageVulnerabilities, monsterDamageResistances, monsterDamageImmunities,
@@ -18,21 +63,21 @@ public:
 
 private:
 	QString latexString;
-	QList<QString> *inputListPointer;
+	InputData *inputData;
 
 public slots:
 	//Textbox changed, regenerate latex
 	void updateLatex();
 
 	//Receive input data
-	void receiveListPointer(QList<QString> *list);
+	void receiveInputData(InputData *data);
 
 signals:
 	//Display text in GUI
 	void sendText(const QString &text);
 
 	//Request input data
-	void requestListPointer();
+	void requestInputData();
 };
 
 #endif // MONSTER_H

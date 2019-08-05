@@ -50,7 +50,7 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>-640</y>
+           <y>0</y>
            <width>554</width>
            <height>1147</height>
           </rect>
@@ -124,9 +124,6 @@
                 <property name="placeholderText">
                  <string>30 ft., fly 30 ft.</string>
                 </property>
-                <property name="clearButtonEnabled">
-                 <bool>true</bool>
-                </property>
                </widget>
               </item>
               <item row="0" column="2">
@@ -156,9 +153,6 @@
                 <property name="placeholderText">
                  <string>15 (Leather Armor, Shield)</string>
                 </property>
-                <property name="clearButtonEnabled">
-                 <bool>true</bool>
-                </property>
                </widget>
               </item>
               <item row="0" column="1">
@@ -187,9 +181,6 @@
                 </property>
                 <property name="placeholderText">
                  <string>3d8 + 3</string>
-                </property>
-                <property name="clearButtonEnabled">
-                 <bool>true</bool>
                 </property>
                </widget>
               </item>

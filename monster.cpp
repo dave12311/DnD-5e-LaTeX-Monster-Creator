@@ -5,131 +5,188 @@ Monster::Monster(){}
 
 Monster::~Monster(){}
 
+void InputData::clear(){
+	basicData.clear();
+	innateSpellcasting.clear();
+	innateSpells.clear();
+	spellcasting.clear();
+	spells.clear();
+	actions.clear();
+	attacks.clear();
+}
+
 void Monster::updateLatex(){
-	emit requestListPointer();
+	emit requestInputData();
 
 	//Begin
 	latexString = "\\begin{DndMonster}{";
-	latexString.append((*inputListPointer)[monsterName]);
+	latexString.append(inputData->basicData[monsterName]);
 	latexString.append("}\n");
 
 	//Monster type
-	if((*inputListPointer)[1] != nullptr){
+	if(inputData->basicData[1] != nullptr){
 		latexString.append("\t\\DndMonsterType{");
-		latexString.append((*inputListPointer)[monsterType]);
+		latexString.append(inputData->basicData[monsterType]);
 		latexString.append("}\n\n");
 	}
 
 	//Basics
-	if((*inputListPointer)[monsterAC] != nullptr || (*inputListPointer)[monsterHP] != nullptr || (*inputListPointer)[monsterSpeed] != nullptr){
+	if(inputData->basicData[monsterAC] != nullptr || inputData->basicData[monsterHP] != nullptr || inputData->basicData[monsterSpeed] != nullptr){
 		latexString.append("\t\\DndMonsterBasics[\n");
-		if((*inputListPointer)[monsterAC] != nullptr){
+		if(inputData->basicData[monsterAC] != nullptr){
 			latexString.append("\t\tarmor-class = {");
-			latexString.append((*inputListPointer)[monsterAC]);
+			latexString.append(inputData->basicData[monsterAC]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterHP] != nullptr){
+		if(inputData->basicData[monsterHP] != nullptr){
 			latexString.append("\t\thit-points = {\\DndDice{");
-			latexString.append((*inputListPointer)[monsterHP]);
+			latexString.append(inputData->basicData[monsterHP]);
 			latexString.append("}},\n");
 		}
-		if((*inputListPointer)[monsterSpeed] != nullptr){
+		if(inputData->basicData[monsterSpeed] != nullptr){
 			latexString.append("\t\tspeed = {");
-			latexString.append((*inputListPointer)[monsterSpeed]);
+			latexString.append(inputData->basicData[monsterSpeed]);
 			latexString.append("},\n");
 		}
 		latexString.append("\t]\n\n");
 	}
 
 	//Ability scores
-	if((*inputListPointer)[monsterSTR] != nullptr || (*inputListPointer)[monsterDEX] != nullptr || (*inputListPointer)[monsterCON] != nullptr ||
-			(*inputListPointer)[monsterINT] != nullptr || (*inputListPointer)[monsterWIS] != nullptr || (*inputListPointer)[monsterCHA] != nullptr){
+	if(inputData->basicData[monsterSTR] != nullptr || inputData->basicData[monsterDEX] != nullptr || inputData->basicData[monsterCON] != nullptr ||
+			inputData->basicData[monsterINT] != nullptr || inputData->basicData[monsterWIS] != nullptr || inputData->basicData[monsterCHA] != nullptr){
 		latexString.append("\t\\DndMonsterAbilityScores[\n");
-		if((*inputListPointer)[monsterSTR] != nullptr){
+		if(inputData->basicData[monsterSTR] != nullptr){
 			latexString.append("\t\tstr = ");
-			latexString.append((*inputListPointer)[monsterSTR]);
+			latexString.append(inputData->basicData[monsterSTR]);
 			latexString.append(",\n");
 		}
-		if((*inputListPointer)[monsterDEX] != nullptr){
+		if(inputData->basicData[monsterDEX] != nullptr){
 			latexString.append("\t\tdex = ");
-			latexString.append((*inputListPointer)[monsterDEX]);
+			latexString.append(inputData->basicData[monsterDEX]);
 			latexString.append(",\n");
 		}
-		if((*inputListPointer)[monsterCON] != nullptr){
+		if(inputData->basicData[monsterCON] != nullptr){
 			latexString.append("\t\tcon = ");
-			latexString.append((*inputListPointer)[monsterCON]);
+			latexString.append(inputData->basicData[monsterCON]);
 			latexString.append(",\n");
 		}
-		if((*inputListPointer)[monsterINT] != nullptr){
+		if(inputData->basicData[monsterINT] != nullptr){
 			latexString.append("\t\tint = ");
-			latexString.append((*inputListPointer)[monsterINT]);
+			latexString.append(inputData->basicData[monsterINT]);
 			latexString.append(",\n");
 		}
-		if((*inputListPointer)[monsterWIS] != nullptr){
+		if(inputData->basicData[monsterWIS] != nullptr){
 			latexString.append("\t\twis = ");
-			latexString.append((*inputListPointer)[monsterWIS]);
+			latexString.append(inputData->basicData[monsterWIS]);
 			latexString.append(",\n");
 		}
-		if((*inputListPointer)[monsterCHA] != nullptr){
+		if(inputData->basicData[monsterCHA] != nullptr){
 			latexString.append("\t\tcha = ");
-			latexString.append((*inputListPointer)[monsterCHA]);
+			latexString.append(inputData->basicData[monsterCHA]);
 			latexString.append(",\n");
 		}
 		latexString.append("\t]\n\n");
 	}
 
 	//Details
-	if((*inputListPointer)[monsterSavingThrows] != nullptr || (*inputListPointer)[monsterSkills] != nullptr || (*inputListPointer)[monsterDamageVulnerabilities] != nullptr ||
-			(*inputListPointer)[monsterDamageResistances] != nullptr || (*inputListPointer)[monsterDamageImmunities] != nullptr ||
-			(*inputListPointer)[monsterConditionImmunities] != nullptr || (*inputListPointer)[monsterSenses] != nullptr || (*inputListPointer)[monsterLanguages] != nullptr ||
-			(*inputListPointer)[monsterChallenge] != nullptr){
+	if(inputData->basicData[monsterSavingThrows] != nullptr || inputData->basicData[monsterSkills] != nullptr || inputData->basicData[monsterDamageVulnerabilities] != nullptr ||
+			inputData->basicData[monsterDamageResistances] != nullptr || inputData->basicData[monsterDamageImmunities] != nullptr ||
+			inputData->basicData[monsterConditionImmunities] != nullptr || inputData->basicData[monsterSenses] != nullptr || inputData->basicData[monsterLanguages] != nullptr ||
+			inputData->basicData[monsterChallenge] != nullptr){
 		latexString.append("\t\\DndMonsterDetails[\n");
-		if((*inputListPointer)[monsterSavingThrows] != nullptr){
+		if(inputData->basicData[monsterSavingThrows] != nullptr){
 			latexString.append("\t\tsaving-throws = {");
-			latexString.append((*inputListPointer)[monsterSavingThrows]);
+			latexString.append(inputData->basicData[monsterSavingThrows]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterSkills] != nullptr){
+		if(inputData->basicData[monsterSkills] != nullptr){
 			latexString.append("\t\tskills = {");
-			latexString.append((*inputListPointer)[monsterSkills]);
+			latexString.append(inputData->basicData[monsterSkills]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterDamageVulnerabilities] != nullptr){
+		if(inputData->basicData[monsterDamageVulnerabilities] != nullptr){
 			latexString.append("\t\tdamage-vulnerabilities = {");
-			latexString.append((*inputListPointer)[monsterDamageVulnerabilities]);
+			latexString.append(inputData->basicData[monsterDamageVulnerabilities]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterDamageResistances] != nullptr){
+		if(inputData->basicData[monsterDamageResistances] != nullptr){
 			latexString.append("\t\tdamage-resistances = {");
-			latexString.append((*inputListPointer)[monsterDamageResistances]);
+			latexString.append(inputData->basicData[monsterDamageResistances]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterDamageImmunities] != nullptr){
+		if(inputData->basicData[monsterDamageImmunities] != nullptr){
 			latexString.append("\t\tdamage-immunities = {");
-			latexString.append((*inputListPointer)[monsterDamageImmunities]);
+			latexString.append(inputData->basicData[monsterDamageImmunities]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterConditionImmunities] != nullptr){
+		if(inputData->basicData[monsterConditionImmunities] != nullptr){
 			latexString.append("\t\tcondition-immunities = {");
-			latexString.append((*inputListPointer)[monsterConditionImmunities]);
+			latexString.append(inputData->basicData[monsterConditionImmunities]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterSenses] != nullptr){
+		if(inputData->basicData[monsterSenses] != nullptr){
 			latexString.append("\t\tsenses = {");
-			latexString.append((*inputListPointer)[monsterSenses]);
+			latexString.append(inputData->basicData[monsterSenses]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterLanguages] != nullptr){
+		if(inputData->basicData[monsterLanguages] != nullptr){
 			latexString.append("\t\tlanguages = {");
-			latexString.append((*inputListPointer)[monsterLanguages]);
+			latexString.append(inputData->basicData[monsterLanguages]);
 			latexString.append("},\n");
 		}
-		if((*inputListPointer)[monsterChallenge] != nullptr){
+		if(inputData->basicData[monsterChallenge] != nullptr){
 			latexString.append("\t\tchallenge = ");
-			latexString.append((*inputListPointer)[monsterChallenge]);
+			latexString.append(inputData->basicData[monsterChallenge]);
 			latexString.append(",\n");
 		}
 		latexString.append("\t]\n\n");
+	}
+
+	//Innate Spellcasting
+	if(inputData->innateSpellcasting != ""){
+		latexString.append("\t\\DndMonsterAction{Innate Spellcasting}\n\t");
+		latexString.append(inputData->innateSpellcasting);
+		latexString.append("\n\t\\begin{DndMonsterSpells}\n");
+		for(int i = 0; i < inputData->innateSpells.count(); i++){
+			if(inputData->innateSpells[i].name != ""){
+				latexString.append("\t\t\\DndInnateSpellLevel");
+				if(inputData->innateSpells[i].num == 0){
+					latexString.append("{");
+					latexString.append(inputData->innateSpells[i].name);
+				}else{
+					latexString.append("[");
+					latexString.append(QString::number(inputData->innateSpells[i].num));
+					latexString.append("]{");
+					latexString.append(inputData->innateSpells[i].name);
+				}
+				latexString.append("}\n");
+			}
+		}
+		latexString.append("\t\\end{DndMonsterSpells}\n");
+	}
+
+	//Spellcasting
+	if(inputData->spellcasting != ""){
+		latexString.append("\t\\DndMonsterAction{Spellcasting}\n\t");
+		latexString.append(inputData->spellcasting);
+		latexString.append("\n\t\\begin{DndMonsterSpells}\n");
+		for(int i = 0; i < inputData->spells.count(); i++){
+			if(inputData->spells[i].name != ""){
+				latexString.append("\t\t\\DndSpellLevel");
+			//TODO:
+				if(inputData->spells[i].levelIndex == 0){
+					latexString.append("{");
+					latexString.append(inputData->innateSpells[i].name);
+				}else{
+					latexString.append("[");
+					latexString.append(QString::number(inputData->innateSpells[i].num));
+					latexString.append("]{");
+					latexString.append(inputData->innateSpells[i].name);
+				}
+				latexString.append("}\n");
+			}
+		}
+		latexString.append("\t\\end{DndMonsterSpells}\n");
 	}
 
 	//End
@@ -137,6 +194,6 @@ void Monster::updateLatex(){
 	emit sendText(latexString);
 }
 
-void Monster::receiveListPointer(QList<QString> *listPointer){
-	inputListPointer = listPointer;
+void Monster::receiveInputData(InputData *data){
+	inputData = data;
 }

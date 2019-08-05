@@ -35,11 +35,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		connect(ui->monsterLanguages,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 		connect(ui->monsterChallenge,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
+		connect(ui->monsterInnateSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+
 		//Request input box data
-		connect(monster,&Monster::requestListPointer,this,&MainWindow::dataRequested);
+		connect(monster,&Monster::requestInputData,this,&MainWindow::inputDataRequested);
 
 		//Send input data
-		connect(this,&MainWindow::sendListPointer,monster,&Monster::receiveListPointer);
+		connect(this,&MainWindow::sendInputData,monster,&Monster::receiveInputData);
 
 		//Connect functions to display text in the GUI
 		connect(monster,&Monster::sendText,this,&MainWindow::writeLatexOut);
@@ -91,30 +93,66 @@ void MainWindow::writeLatexOut(const QString &text){
 	ui->latexOut->setText(text);
 }
 
-void MainWindow::dataRequested(){
+void MainWindow::inputDataRequested(){
+	//Build inputData
 	inputData.clear();
-	inputData.append(ui->monsterName->text());
-	inputData.append(ui->monsterType->text());
-	inputData.append(ui->monsterAC->text());
-	inputData.append(ui->monsterHP->text());
-	inputData.append(ui->monsterSpeed->text());
-	inputData.append(ui->monsterSTR->text());
-	inputData.append(ui->monsterDEX->text());
-	inputData.append(ui->monsterCON->text());
-	inputData.append(ui->monsterINT->text());
-	inputData.append(ui->monsterWIS->text());
-	inputData.append(ui->monsterCHA->text());
-	inputData.append(ui->monsterSavingThrows->text());
-	inputData.append(ui->monsterSkills->text());
-	inputData.append(ui->monsterDamageVulnerabilities->text());
-	inputData.append(ui->monsterDamageResistances->text());
-	inputData.append(ui->monsterDamageImmunities->text());
-	inputData.append(ui->monsterConditionImmunities->text());
-	inputData.append(ui->monsterSenses->text());
-	inputData.append(ui->monsterLanguages->text());
-	inputData.append(ui->monsterChallenge->text());
 
-	emit sendListPointer(&inputData);
+	//Basic Data
+	inputData.basicData.append(ui->monsterName->text());
+	inputData.basicData.append(ui->monsterType->text());
+	inputData.basicData.append(ui->monsterAC->text());
+	inputData.basicData.append(ui->monsterHP->text());
+	inputData.basicData.append(ui->monsterSpeed->text());
+	inputData.basicData.append(ui->monsterSTR->text());
+	inputData.basicData.append(ui->monsterDEX->text());
+	inputData.basicData.append(ui->monsterCON->text());
+	inputData.basicData.append(ui->monsterINT->text());
+	inputData.basicData.append(ui->monsterWIS->text());
+	inputData.basicData.append(ui->monsterCHA->text());
+	inputData.basicData.append(ui->monsterSavingThrows->text());
+	inputData.basicData.append(ui->monsterSkills->text());
+	inputData.basicData.append(ui->monsterDamageVulnerabilities->text());
+	inputData.basicData.append(ui->monsterDamageResistances->text());
+	inputData.basicData.append(ui->monsterDamageImmunities->text());
+	inputData.basicData.append(ui->monsterConditionImmunities->text());
+	inputData.basicData.append(ui->monsterSenses->text());
+	inputData.basicData.append(ui->monsterLanguages->text());
+	inputData.basicData.append(ui->monsterChallenge->text());
+
+	//Spells
+	Spell tmpSpell;
+	inputData.innateSpellcasting = ui->monsterInnateSpellcasting->text();
+	for(int i = 0; i < innateSpellLayouts.count(); i++){
+		tmpSpell.name = innateSpellLineEdits[i]->text();
+		tmpSpell.num = innateSpellSpinBoxes[i]->value();
+
+		inputData.innateSpells.append(tmpSpell);
+	}
+
+	inputData.spellcasting = ui->monsterSpellcasting->text();
+	for(int i = 0; i < spellLayouts.count(); i++){
+		tmpSpell.name = spellLineEdits[i]->text();
+		tmpSpell.levelIndex = spellComboBoxes[i]->currentIndex();
+		tmpSpell.num = spellSpinBoxes[i]->value();
+
+		inputData.spells.append(tmpSpell);
+	}
+
+	//Actions
+	Action tmpAction;
+	tmpAction.name = ui->monsterActionName1->text();
+	tmpAction.desc = ui->monsterActionDesc1->text();
+	inputData.actions.append(tmpAction);
+	for(int i = 0; i < actionLayouts.count(); i++){
+		tmpAction.name = actionNames[i]->text();
+		tmpAction.desc = actionDescriptions[i]->text();
+
+		inputData.actions.append(tmpAction);
+	}
+
+	//Attacks
+
+	emit sendInputData(&inputData);
 }
 
 void MainWindow::addInnateSpellSlot(){
@@ -130,7 +168,12 @@ void MainWindow::addInnateSpellSlot(){
 
 	//Set properties
 	innateSpellSpinBoxes[id]->setToolTip("Spell recharge time in days");
+	innateSpellLineEdits[id]->setToolTip("Spell name");
 	innateSpellLineEdits[id]->setClearButtonEnabled(true);
+
+	//Update Latex
+	connect(innateSpellLineEdits[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(innateSpellSpinBoxes[id],QOverload<int>::of(&QSpinBox::valueChanged),monster,&Monster::updateLatex);
 
 	//Add new layout
 	ui->innateSpellcasting->addLayout(innateSpellLayouts[id]);
@@ -149,11 +192,15 @@ void MainWindow::addInnateSpellSlot(){
 	connect(innateSpellLineEdits[id],&QLineEdit::textChanged,this,&MainWindow::addInnateSpellSlot);
 	if(id>0){
 		innateSpellLineEdits[id-1]->disconnect();
+		connect(innateSpellLineEdits[id-1],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(innateSpellSpinBoxes[id-1],QOverload<int>::of(&QSpinBox::valueChanged),monster,&Monster::updateLatex);
 		connect(innateSpellLineEdits[id-1],&QLineEdit::textChanged,this,&MainWindow::removeInnateSpellSlot);
 	}
 
 	if(id>1){
 		innateSpellLineEdits[id-2]->disconnect();
+		connect(innateSpellLineEdits[id-2],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(innateSpellSpinBoxes[id-2],QOverload<int>::of(&QSpinBox::valueChanged),monster,&Monster::updateLatex);
 	}
 }
 

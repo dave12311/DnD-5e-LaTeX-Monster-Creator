@@ -22,7 +22,7 @@ public:
 private:
 	Ui::MainWindow *ui;
 	Monster *monster;
-	QList<QString> inputData;
+	InputData inputData;
 
 	//Spells
 	QList<QHBoxLayout*> innateSpellLayouts;
@@ -65,8 +65,7 @@ public slots:
 	//TODO: change parameter
 	void writeLatexOut(const QString &text);
 
-	//Request input data
-	void dataRequested();
+	void inputDataRequested();
 
 	//Spells
 	void addInnateSpellSlot();
@@ -81,7 +80,7 @@ public slots:
 
 signals:
 	//Send input data
-	void sendListPointer(QList<QString> *list);
+	void sendInputData(InputData *data);
 
 private slots:
 	void on_monsterInnateSpellcasting_textChanged(const QString &arg1);
