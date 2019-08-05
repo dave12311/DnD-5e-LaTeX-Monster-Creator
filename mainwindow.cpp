@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "monsterenum.h"
 #include <QObject>
 #include <QWidget>
 #include <QLayout>
@@ -10,36 +9,40 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		ui->setupUi(this);
 		monster = new Monster;
 
+		//Connect GUI signals
+		connect(ui->monsterActionName1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
+		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
+
 		//Connect editingFinished() signals to updateLatex()
-		QObject::connect(ui->monsterName,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterType,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterAC,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterHP,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterSpeed,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterSTR,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterDEX,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterCON,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterINT,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterWIS,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterCHA,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterSavingThrows,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterSkills,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterDamageVulnerabilities,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterDamageResistances,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterDamageImmunities,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterConditionImmunities,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterSenses,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterLanguages,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
-		QObject::connect(ui->monsterChallenge,SIGNAL(editingFinished()),monster,SLOT(updateLatex()));
+		connect(ui->monsterName,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterType,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAC,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterHP,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterSpeed,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterSTR,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterDEX,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterCON,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterINT,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterWIS,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterCHA,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterSavingThrows,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterSkills,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterDamageVulnerabilities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterDamageResistances,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterDamageImmunities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterConditionImmunities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterSenses,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterLanguages,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterChallenge,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
 		//Request input box data
-		QObject::connect(monster,SIGNAL(requestListPointer()),this,SLOT(dataRequested()));
+		connect(monster,&Monster::requestListPointer,this,&MainWindow::dataRequested);
 
 		//Send input data
-		QObject::connect(this,SIGNAL(sendListPointer(QList<QString>*)),monster,SLOT(receiveListPointer(QList<QString>*)));
+		connect(this,&MainWindow::sendListPointer,monster,&Monster::receiveListPointer);
 
 		//Connect functions to display text in the GUI
-		QObject::connect(monster,SIGNAL(sendText(QString*)),this,SLOT(writeLatexOut(QString*)));
+		connect(monster,&Monster::sendText,this,&MainWindow::writeLatexOut);
 
 		//Setup default ui
 		ui->monsterAttackType1->addItem("Weapon");
@@ -84,8 +87,8 @@ MainWindow::~MainWindow(){
 	delete ui;
 }
 
-void MainWindow::writeLatexOut(QString *text){
-	ui->latexOut->setText(*text);
+void MainWindow::writeLatexOut(const QString &text){
+	ui->latexOut->setText(text);
 }
 
 void MainWindow::dataRequested(){
@@ -116,8 +119,8 @@ void MainWindow::dataRequested(){
 
 void MainWindow::addInnateSpellSlot(){
 	//Disconnect sender to prevent spamming
-	if(QObject::sender()->objectName() != "monsterInnateSpellcasting"){
-		QObject::sender()->disconnect();
+	if(sender()->objectName() != "monsterInnateSpellcasting"){
+		sender()->disconnect();
 	}
 
 	innateSpellLayouts.append(new QHBoxLayout);
@@ -143,10 +146,10 @@ void MainWindow::addInnateSpellSlot(){
 	ui->scrollArea->ensureWidgetVisible(innateSpellLineEdits[id]);
 
 	//Setup dynamic UI creation
-	QObject::connect(innateSpellLineEdits[id], SIGNAL(textChanged(QString)), this, SLOT(addInnateSpellSlot()));
+	connect(innateSpellLineEdits[id],&QLineEdit::textChanged,this,&MainWindow::addInnateSpellSlot);
 	if(id>0){
 		innateSpellLineEdits[id-1]->disconnect();
-		QObject::connect(innateSpellLineEdits[id-1], SIGNAL(textChanged(QString)), this, SLOT(removeInnateSpellSlot(QString)));
+		connect(innateSpellLineEdits[id-1],&QLineEdit::textChanged,this,&MainWindow::removeInnateSpellSlot);
 	}
 
 	if(id>1){
@@ -154,8 +157,8 @@ void MainWindow::addInnateSpellSlot(){
 	}
 }
 
-void MainWindow::removeInnateSpellSlot(QString text){
-	if(text == ""){
+void MainWindow::removeInnateSpellSlot(const QString &text){
+	if(text == "" && innateSpellSpinBoxes.last()->value() == 0){
 		innateSpellLineEdits.last()->deleteLater();
 		innateSpellSpinBoxes.last()->deleteLater();
 		innateSpellLayouts.last()->deleteLater();
@@ -164,17 +167,17 @@ void MainWindow::removeInnateSpellSlot(QString text){
 		innateSpellSpinBoxes.removeLast();
 		innateSpellLayouts.removeLast();
 
-		QObject::connect(innateSpellLineEdits.last(), SIGNAL(textChanged(QString)), this, SLOT(addInnateSpellSlot()));
+		connect(innateSpellLineEdits.last(),&QLineEdit::textChanged,this,&MainWindow::addInnateSpellSlot);
 		if(innateSpellLineEdits.count()>1){
-			QObject::connect(innateSpellLineEdits.at(innateSpellLineEdits.count()-2), SIGNAL(textChanged(QString)), this, SLOT(removeInnateSpellSlot(QString)));
+			connect(innateSpellLineEdits.at(innateSpellLineEdits.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeInnateSpellSlot);
 		}
 	}
 }
 
 void MainWindow::addSpellSlot(){
 	//Disconnect sender to prevent spamming
-	if(QObject::sender()->objectName() != "monsterSpellcasting"){
-		QObject::sender()->disconnect();
+	if(sender()->objectName() != "monsterSpellcasting"){
+		sender()->disconnect();
 	}
 
 	spellLayouts.append(new QHBoxLayout);
@@ -215,10 +218,10 @@ void MainWindow::addSpellSlot(){
 	ui->scrollArea->ensureWidgetVisible(spellLineEdits[id]);
 
 	//Dynamic UI creation
-	QObject::connect(spellLineEdits[id],SIGNAL(textChanged(QString)),this,SLOT(addSpellSlot()));
+	connect(spellLineEdits[id],&QLineEdit::textChanged,this,&MainWindow::addSpellSlot);
 	if(id>0){
 		spellLineEdits[id-1]->disconnect();
-		QObject::connect(spellLineEdits[id-1], SIGNAL(textChanged(QString)), this, SLOT(removeSpellSlot(QString)));
+		connect(spellLineEdits[id-1],&QLineEdit::textChanged,this,&MainWindow::removeSpellSlot);
 	}
 
 	if(id>1){
@@ -226,8 +229,8 @@ void MainWindow::addSpellSlot(){
 	}
 }
 
-void MainWindow::removeSpellSlot(QString text){
-	if(text == ""){
+void MainWindow::removeSpellSlot(const QString &text){
+	if(text == "" && spellSpinBoxes.last()->value() == 0 && spellComboBoxes.last()->currentText() == "Cantrip"){
 		spellLineEdits.last()->deleteLater();
 		spellComboBoxes.last()->deleteLater();
 		spellSpinBoxes.last()->deleteLater();
@@ -238,17 +241,17 @@ void MainWindow::removeSpellSlot(QString text){
 		spellSpinBoxes.removeLast();
 		spellLayouts.removeLast();
 
-		QObject::connect(spellLineEdits.last(), SIGNAL(textChanged(QString)), this, SLOT(addSpellSlot()));
+		connect(spellLineEdits.last(),&QLineEdit::textChanged,this,&MainWindow::addSpellSlot);
 		if(spellLineEdits.count()>1){
-			QObject::connect(spellLineEdits.at(spellLineEdits.count()-2), SIGNAL(textChanged(QString)), this, SLOT(removeSpellSlot(QString)));
+			connect(spellLineEdits.at(spellLineEdits.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeSpellSlot);
 		}
 	}
 }
 
 void MainWindow::addActionSlot(){
 	//Disconnect sender to prevent spamming
-	if(QObject::sender()->objectName() != "monsterActionName1" && QObject::sender()->objectName() != "monsterActionDesc1"){
-		QObject::sender()->disconnect();
+	if(sender()->objectName() != "monsterActionName1" && QObject::sender()->objectName() != "monsterActionDesc1"){
+		sender()->disconnect();
 	}
 
 	actionLayouts.append(new QHBoxLayout);
@@ -259,6 +262,7 @@ void MainWindow::addActionSlot(){
 	//Set properties
 	actionNames[id]->setFont(QFont("Noto Sans", -1, QFont::Bold));
 	actionDescriptions[id]->setFont(QFont("Noto Sans, -1, -1, true"));
+	actionDescriptions[id]->setClearButtonEnabled(true);
 
 	//Add new layout
 	ui->actions->addLayout(actionLayouts[id]);
@@ -278,13 +282,13 @@ void MainWindow::addActionSlot(){
 	ui->scrollArea->ensureWidgetVisible(actionNames[id]);
 
 	//Dynamic UI creation
-	QObject::connect(actionNames[id],SIGNAL(textChanged(QString)),this,SLOT(addActionSlot()));
-	QObject::connect(actionDescriptions[id],SIGNAL(textChanged(QString)),this,SLOT(addActionSlot()));
+	connect(actionNames[id],&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
+	connect(actionDescriptions[id],&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
 	if(id>0){
 		actionNames[id-1]->disconnect();
 		actionDescriptions[id-1]->disconnect();
-		QObject::connect(actionNames[id-1],SIGNAL(textChanged(QString)),this,SLOT(removeActionSlot()));
-		QObject::connect(actionDescriptions[id-1],SIGNAL(textChanged(QString)),this,SLOT(removeActionSlot()));
+		connect(actionNames[id-1],&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
+		connect(actionDescriptions[id-1],&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
 	}
 
 	if(id>1){
@@ -303,11 +307,11 @@ void MainWindow::removeActionSlot(){
 		actionDescriptions.removeLast();
 		actionLayouts.removeLast();
 
-		QObject::connect(actionNames.last(), SIGNAL(textChanged(QString)), this, SLOT(addActionSlot()));
-		QObject::connect(actionDescriptions.last(),SIGNAL(textChanged(QString)),this,SLOT(addActionSlot()));
+		connect(actionNames.last(),&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
+		connect(actionDescriptions.last(),&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
 		if(actionNames.count()>1){
-			QObject::connect(actionNames.at(actionNames.count()-2), SIGNAL(textChanged(QString)), this, SLOT(removeActionSlot()));
-			QObject::connect(actionDescriptions.at(actionDescriptions.count()-2), SIGNAL(textChanged(QString)), this, SLOT(removeActionSlot()));
+			connect(actionNames.at(actionNames.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
+			connect(actionDescriptions.at(actionDescriptions.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
 		}
 	}
 }
@@ -343,8 +347,8 @@ void MainWindow::on_monsterSpellcasting_textChanged(const QString &arg1){
 	}
 }
 
-void MainWindow::on_monsterActionName1_textChanged(const QString &arg1){
-	if(arg1 != "" && actionLayouts.count() == 0){
+void MainWindow::monsterAction_textChanged(const QString &text){
+	if(text != "" && actionLayouts.count() == 0){
 		addActionSlot();
 	}else if(actionLayouts.count() == 1 && actionNames.last()->text() == "" && actionDescriptions.last()->text() == "" &&
 			 ui->monsterActionName1->text() == "" && ui->monsterActionDesc1->text() == ""){
@@ -358,17 +362,28 @@ void MainWindow::on_monsterActionName1_textChanged(const QString &arg1){
 	}
 }
 
-void MainWindow::on_monsterActionDesc1_textChanged(const QString &arg1){
-	if(arg1 != "" && actionLayouts.count() == 0){
-		addActionSlot();
-	}else if(actionLayouts.count() == 1 && actionNames.last()->text() == "" && actionDescriptions.last()->text() == "" &&
-			 ui->monsterActionName1->text() == "" && ui->monsterActionDesc1->text() == ""){
-		actionNames.last()->deleteLater();
-		actionDescriptions.last()->deleteLater();
-		actionLayouts.last()->deleteLater();
+void MainWindow::monsterAttack_textChanged(const QString &text){
+	if(text == ""){
 
-		actionNames.removeLast();
-		actionDescriptions.removeLast();
-		actionLayouts.removeLast();
+	}
+}
+
+
+void MainWindow::on_monsterAttackDistance1_currentTextChanged(const QString &arg1){
+	if(arg1 == "Melee"){
+		ui->monsterAttackReach1->setVisible(true);
+		ui->label_attackReach1->setVisible(true);
+		ui->monsterAttackRange1->setVisible(false);
+		ui->label_attackRange1->setVisible(false);
+	}else if(arg1 == "Ranged"){
+		ui->monsterAttackReach1->setVisible(false);
+		ui->label_attackReach1->setVisible(false);
+		ui->monsterAttackRange1->setVisible(true);
+		ui->label_attackRange1->setVisible(true);
+	}else{
+		ui->monsterAttackReach1->setVisible(true);
+		ui->label_attackReach1->setVisible(true);
+		ui->monsterAttackRange1->setVisible(true);
+		ui->label_attackRange1->setVisible(true);
 	}
 }

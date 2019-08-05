@@ -1,5 +1,4 @@
 #include "monster.h"
-#include "monsterenum.h"
 #include <string.h>
 
 Monster::Monster(){}
@@ -135,7 +134,7 @@ void Monster::updateLatex(){
 
 	//End
 	latexString.append("\\end{DndMonster}");
-	emit sendText(&latexString);
+	emit sendText(latexString);
 }
 
 void Monster::receiveListPointer(QList<QString> *listPointer){

@@ -31,8 +31,7 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-        monster.h \
-        monsterenum.h
+        monster.h
 
 FORMS += \
         mainwindow.ui

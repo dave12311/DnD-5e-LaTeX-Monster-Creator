@@ -3,6 +3,12 @@
 
 #include <QObject>
 
+enum monsterEnum{
+	monsterName, monsterType, monsterAC, monsterHP, monsterSpeed, monsterSTR, monsterDEX, monsterCON, monsterINT, monsterWIS, monsterCHA,
+	monsterSavingThrows, monsterSkills, monsterDamageVulnerabilities, monsterDamageResistances, monsterDamageImmunities,
+	monsterConditionImmunities, monsterSenses, monsterLanguages, monsterChallenge
+};
+
 class Monster : public QObject{
 	Q_OBJECT
 
@@ -23,7 +29,7 @@ public slots:
 
 signals:
 	//Display text in GUI
-	void sendText(QString *text);
+	void sendText(const QString &text);
 
 	//Request input data
 	void requestListPointer();
