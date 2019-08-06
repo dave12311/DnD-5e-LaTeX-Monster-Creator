@@ -162,7 +162,7 @@ void Monster::updateLatex(){
 				latexString.append("}\n");
 			}
 		}
-		latexString.append("\t\\end{DndMonsterSpells}\n");
+		latexString.append("\t\\end{DndMonsterSpells}\n\n");
 	}
 
 	//Spellcasting
@@ -172,17 +172,16 @@ void Monster::updateLatex(){
 		latexString.append("\n\t\\begin{DndMonsterSpells}\n");
 		for(int i = 0; i < inputData->spells.count(); i++){
 			if(inputData->spells[i].name != ""){
-				latexString.append("\t\t\\DndSpellLevel");
-			//TODO:
-				if(inputData->spells[i].levelIndex == 0){
-					latexString.append("{");
-					latexString.append(inputData->innateSpells[i].name);
-				}else{
+				latexString.append("\t\t\\DndMonsterSpellLevel");
+				if(inputData->spells[i].levelIndex != 0){
 					latexString.append("[");
-					latexString.append(QString::number(inputData->innateSpells[i].num));
-					latexString.append("]{");
-					latexString.append(inputData->innateSpells[i].name);
+					latexString.append(QString::number(inputData->spells[i].levelIndex));
+					latexString.append("][");
+					latexString.append(QString::number(inputData->spells[i].num));
+					latexString.append("]");
 				}
+				latexString.append("{");
+				latexString.append(inputData->spells[i].name);
 				latexString.append("}\n");
 			}
 		}

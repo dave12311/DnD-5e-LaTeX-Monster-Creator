@@ -28,16 +28,22 @@ private:
 	QList<QHBoxLayout*> innateSpellLayouts;
 	QList<QSpinBox*> innateSpellSpinBoxes;
 	QList<QLineEdit*> innateSpellLineEdits;
+	QMetaObject::Connection addInnateSpellConnect;
+	QMetaObject::Connection removeInnateSpellConnect;
 
 	QList<QHBoxLayout*> spellLayouts;
 	QList<QComboBox*> spellComboBoxes;
 	QList<QSpinBox*> spellSpinBoxes;
 	QList<QLineEdit*> spellLineEdits;
+	QMetaObject::Connection addSpellConnect;
+	QMetaObject::Connection removeSpellConnect;
 
 	//Actions
 	QList<QHBoxLayout*> actionLayouts;
 	QList<QLineEdit*> actionNames;
 	QList<QLineEdit*> actionDescriptions;
+	QMetaObject::Connection addActionConnect;
+	QMetaObject::Connection removeActionConnect;
 
 	//Attacks
 	QList<QHBoxLayout*> attackLayouts;
@@ -55,6 +61,8 @@ private:
 	QList<QLineEdit*> attackOrDamages;
 	QList<QLineEdit*> attackOrDamageWhens;
 	QList<QLineEdit*> attackExtras;
+	QMetaObject::Connection addAttackConnect;
+	QMetaObject::Connection removeAttackConnect;
 
 public slots:
 	//UI
@@ -86,6 +94,8 @@ private slots:
 	void on_monsterInnateSpellcasting_textChanged(const QString &arg1);
 	void on_monsterSpellcasting_textChanged(const QString &arg1);
 	void on_monsterAttackDistance1_currentTextChanged(const QString &arg1);
+
+	void spellComboBoxChange();
 };
 
 #endif // MAINWINDOW_H

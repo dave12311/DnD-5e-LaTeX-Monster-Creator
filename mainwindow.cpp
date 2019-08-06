@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		connect(ui->monsterChallenge,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
 		connect(ui->monsterInnateSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
 		//Request input box data
 		connect(monster,&Monster::requestInputData,this,&MainWindow::inputDataRequested);
@@ -158,7 +159,7 @@ void MainWindow::inputDataRequested(){
 void MainWindow::addInnateSpellSlot(){
 	//Disconnect sender to prevent spamming
 	if(sender()->objectName() != "monsterInnateSpellcasting"){
-		sender()->disconnect();
+		sender()->disconnect(addInnateSpellConnect);
 	}
 
 	innateSpellLayouts.append(new QHBoxLayout);
@@ -167,8 +168,8 @@ void MainWindow::addInnateSpellSlot(){
 	int id = innateSpellLayouts.indexOf(innateSpellLayouts.last());
 
 	//Set properties
-	innateSpellSpinBoxes[id]->setToolTip("Spell recharge time in days");
-	innateSpellLineEdits[id]->setToolTip("Spell name");
+	innateSpellSpinBoxes[id]->setToolTip("Spell uses per day");
+	innateSpellLineEdits[id]->setToolTip("Spell names");
 	innateSpellLineEdits[id]->setClearButtonEnabled(true);
 
 	//Update Latex
@@ -189,18 +190,12 @@ void MainWindow::addInnateSpellSlot(){
 	ui->scrollArea->ensureWidgetVisible(innateSpellLineEdits[id]);
 
 	//Setup dynamic UI creation
-	connect(innateSpellLineEdits[id],&QLineEdit::textChanged,this,&MainWindow::addInnateSpellSlot);
-	if(id>0){
-		innateSpellLineEdits[id-1]->disconnect();
-		connect(innateSpellLineEdits[id-1],&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(innateSpellSpinBoxes[id-1],QOverload<int>::of(&QSpinBox::valueChanged),monster,&Monster::updateLatex);
-		connect(innateSpellLineEdits[id-1],&QLineEdit::textChanged,this,&MainWindow::removeInnateSpellSlot);
+	addInnateSpellConnect = connect(innateSpellLineEdits[id],&QLineEdit::textChanged,this,&MainWindow::addInnateSpellSlot);
+	if(id > 1){
+		innateSpellLineEdits[id-2]->disconnect(removeInnateSpellConnect);
 	}
-
-	if(id>1){
-		innateSpellLineEdits[id-2]->disconnect();
-		connect(innateSpellLineEdits[id-2],&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(innateSpellSpinBoxes[id-2],QOverload<int>::of(&QSpinBox::valueChanged),monster,&Monster::updateLatex);
+	if(id > 0){
+		removeInnateSpellConnect = connect(innateSpellLineEdits[id-1],&QLineEdit::textChanged,this,&MainWindow::removeInnateSpellSlot);
 	}
 }
 
@@ -214,9 +209,12 @@ void MainWindow::removeInnateSpellSlot(const QString &text){
 		innateSpellSpinBoxes.removeLast();
 		innateSpellLayouts.removeLast();
 
-		connect(innateSpellLineEdits.last(),&QLineEdit::textChanged,this,&MainWindow::addInnateSpellSlot);
-		if(innateSpellLineEdits.count()>1){
-			connect(innateSpellLineEdits.at(innateSpellLineEdits.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeInnateSpellSlot);
+		addInnateSpellConnect = connect(innateSpellLineEdits.last(),&QLineEdit::textChanged,this,&MainWindow::addInnateSpellSlot);
+		if(innateSpellLineEdits.count() == 1){
+			innateSpellLineEdits.last()->disconnect(removeInnateSpellConnect);
+		}
+		if(innateSpellLineEdits.count() > 1){
+			removeInnateSpellConnect = connect(innateSpellLineEdits.at(innateSpellLineEdits.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeInnateSpellSlot);
 		}
 	}
 }
@@ -224,7 +222,7 @@ void MainWindow::removeInnateSpellSlot(const QString &text){
 void MainWindow::addSpellSlot(){
 	//Disconnect sender to prevent spamming
 	if(sender()->objectName() != "monsterSpellcasting"){
-		sender()->disconnect();
+		sender()->disconnect(addSpellConnect);
 	}
 
 	spellLayouts.append(new QHBoxLayout);
@@ -246,9 +244,20 @@ void MainWindow::addSpellSlot(){
 	spellComboBoxes[id]->addItems(comboItems);
 
 	spellComboBoxes[id]->setToolTip("Spell level");
-	spellSpinBoxes[id]->setToolTip("Spell slots");
+	spellSpinBoxes[id]->setToolTip("Available spell slots");
+	spellLineEdits[id]->setToolTip("Spell names");
 
 	spellLineEdits[id]->setClearButtonEnabled(true);
+
+	spellSpinBoxes[id]->setVisible(false);
+
+	//Connect Combo Box change
+	connect(spellComboBoxes[id],QOverload<int>::of(&QComboBox::currentIndexChanged),this,&MainWindow::spellComboBoxChange);
+
+	//Update Latex
+	connect(spellLineEdits[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(spellSpinBoxes[id],QOverload<int>::of(&QSpinBox::valueChanged),monster,&Monster::updateLatex);
+	connect(spellComboBoxes[id],QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
 
 	//Add new layout
 	ui->spellcasting->addLayout(spellLayouts[id]);
@@ -264,15 +273,13 @@ void MainWindow::addSpellSlot(){
 	QCoreApplication::processEvents();
 	ui->scrollArea->ensureWidgetVisible(spellLineEdits[id]);
 
-	//Dynamic UI creation
-	connect(spellLineEdits[id],&QLineEdit::textChanged,this,&MainWindow::addSpellSlot);
-	if(id>0){
-		spellLineEdits[id-1]->disconnect();
-		connect(spellLineEdits[id-1],&QLineEdit::textChanged,this,&MainWindow::removeSpellSlot);
+	//Setup dynamic UI creation
+	addSpellConnect = connect(spellLineEdits[id],&QLineEdit::textChanged,this,&MainWindow::addSpellSlot);
+	if(id > 1){
+		spellLineEdits[id-2]->disconnect(removeSpellConnect);
 	}
-
-	if(id>1){
-		spellLineEdits[id-2]->disconnect();
+	if(id > 0){
+		removeSpellConnect = connect(spellLineEdits[id-1],&QLineEdit::textChanged,this,&MainWindow::removeSpellSlot);
 	}
 }
 
@@ -288,9 +295,12 @@ void MainWindow::removeSpellSlot(const QString &text){
 		spellSpinBoxes.removeLast();
 		spellLayouts.removeLast();
 
-		connect(spellLineEdits.last(),&QLineEdit::textChanged,this,&MainWindow::addSpellSlot);
-		if(spellLineEdits.count()>1){
-			connect(spellLineEdits.at(spellLineEdits.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeSpellSlot);
+		addSpellConnect = connect(spellLineEdits.last(),&QLineEdit::textChanged,this,&MainWindow::addSpellSlot);
+		if(spellLineEdits.count() == 1){
+			spellLineEdits.last()->disconnect(removeSpellConnect);
+		}
+		if(spellLineEdits.count() > 1){
+			removeSpellConnect = connect(spellLineEdits.at(spellLineEdits.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeSpellSlot);
 		}
 	}
 }
@@ -432,5 +442,16 @@ void MainWindow::on_monsterAttackDistance1_currentTextChanged(const QString &arg
 		ui->label_attackReach1->setVisible(true);
 		ui->monsterAttackRange1->setVisible(true);
 		ui->label_attackRange1->setVisible(true);
+	}
+}
+
+void MainWindow::spellComboBoxChange(){
+	for(int i = 0; i < spellLayouts.count(); i++){
+		if(spellComboBoxes[i]->currentIndex() == 0){
+			spellSpinBoxes[i]->setVisible(false);
+		}else{
+			spellSpinBoxes[i]->setValue(0);
+			spellSpinBoxes[i]->setVisible(true);
+		}
 	}
 }
