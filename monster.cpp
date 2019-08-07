@@ -185,7 +185,21 @@ void Monster::updateLatex(){
 				latexString.append("}\n");
 			}
 		}
-		latexString.append("\t\\end{DndMonsterSpells}\n");
+		latexString.append("\t\\end{DndMonsterSpells}\n\n");
+	}
+
+	//Actions
+	if(inputData->actions.count() != 0){
+		latexString.append("\t\\DndMonsterSection{Actions}\n");
+	}
+	for(int i = 0; i < inputData->actions.count(); i++){
+		if(inputData->actions[i].name != "" || inputData->actions[i].name != ""){
+			latexString.append("\t\\DndMonsterAction{");
+			latexString.append(inputData->actions[i].name);
+			latexString.append("}\n\t");
+			latexString.append(inputData->actions[i].desc);
+			latexString.append("\n\n");
+		}
 	}
 
 	//End

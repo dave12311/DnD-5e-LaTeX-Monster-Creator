@@ -38,6 +38,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		connect(ui->monsterInnateSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 		connect(ui->monsterSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
+		connect(ui->monsterActionName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+
+		connect(ui->monsterAttackType1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
+		//TODO: Finish all latex updates (+in dynamic ui)
+
 		//Request input box data
 		connect(monster,&Monster::requestInputData,this,&MainWindow::inputDataRequested);
 
@@ -152,6 +158,39 @@ void MainWindow::inputDataRequested(){
 	}
 
 	//Attacks
+	Attack tmpAttack;
+	tmpAttack.typeIndex = ui->monsterAttackType1->currentIndex();
+	tmpAttack.distanceIndex = ui->monsterAttackDistance1->currentIndex();
+	tmpAttack.name = ui->monsterAttackName1->text();
+	tmpAttack.reach = ui->monsterAttackReach1->text();
+	tmpAttack.range = ui->monsterAttackRange1->text();
+	tmpAttack.targets = ui->monsterAttackTargets1->text();
+	tmpAttack.modifier = ui->monsterAttackModifier1->text();
+	tmpAttack.damage = ui->monsterAttackDamage1->text();
+	tmpAttack.damageTypeIndex = ui->monsterAttackDamageType1->currentIndex();
+	tmpAttack.plusDamage = ui->monsterAttackPlusDamage1->text();
+	tmpAttack.plusDamageTypeIndex = ui->monsterAttackPlusDamageType1->currentIndex();
+	tmpAttack.orDamage = ui->monsterAttackOrDamage1->text();
+	tmpAttack.orDamageWhen = ui->monsterAttackOrDamageWhen1->text();
+	tmpAttack.extra = ui->monsterAttackExtra1->text();
+	inputData.attacks.append(tmpAttack);
+	for(int i = 0; i < attackLayouts.count(); i++){
+		tmpAttack.typeIndex = attackTypes[i]->currentIndex();
+		tmpAttack.distanceIndex = attackDistances[i]->currentIndex();
+		tmpAttack.name = attackNames[i]->text();
+		tmpAttack.reach = attackReaches[i]->text();
+		tmpAttack.range = attackRanges[i]->text();
+		tmpAttack.targets = attackTargets[i]->text();
+		tmpAttack.modifier = attackModifiers[i]->text();
+		tmpAttack.damage = attackDamages[i]->text();
+		tmpAttack.damageTypeIndex = attackTypes[i]->currentIndex();
+		tmpAttack.plusDamage = attackPlusDamages[i]->text();
+		tmpAttack.plusDamageTypeIndex = attackPlusDamageTypes[i]->currentIndex();
+		tmpAttack.orDamage = attackOrDamages[i]->text();
+		tmpAttack.orDamageWhen = attackOrDamageWhens[i]->text();
+		tmpAttack.extra = attackExtras[i]->text();
+		inputData.attacks.append(tmpAttack);
+	}
 
 	emit sendInputData(&inputData);
 }
@@ -308,7 +347,8 @@ void MainWindow::removeSpellSlot(const QString &text){
 void MainWindow::addActionSlot(){
 	//Disconnect sender to prevent spamming
 	if(sender()->objectName() != "monsterActionName1" && QObject::sender()->objectName() != "monsterActionDesc1"){
-		sender()->disconnect();
+		sender()->disconnect(addActionNameConnect);
+		sender()->disconnect(addActionDescConnect);
 	}
 
 	actionLayouts.append(new QHBoxLayout);
@@ -319,7 +359,10 @@ void MainWindow::addActionSlot(){
 	//Set properties
 	actionNames[id]->setFont(QFont("Noto Sans", -1, QFont::Bold));
 	actionDescriptions[id]->setFont(QFont("Noto Sans, -1, -1, true"));
-	actionDescriptions[id]->setClearButtonEnabled(true);
+
+	//Update Latex
+	connect(actionNames[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(actionDescriptions[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
 	//Add new layout
 	ui->actions->addLayout(actionLayouts[id]);
@@ -339,18 +382,15 @@ void MainWindow::addActionSlot(){
 	ui->scrollArea->ensureWidgetVisible(actionNames[id]);
 
 	//Dynamic UI creation
-	connect(actionNames[id],&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
-	connect(actionDescriptions[id],&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
-	if(id>0){
-		actionNames[id-1]->disconnect();
-		actionDescriptions[id-1]->disconnect();
-		connect(actionNames[id-1],&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
-		connect(actionDescriptions[id-1],&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
+	addActionNameConnect = connect(actionNames[id],&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
+	addActionDescConnect = connect(actionDescriptions[id],&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
+	if(id > 1){
+		actionNames[id-2]->disconnect(removeActionNameConnect);
+		actionDescriptions[id-2]->disconnect(removeActionDescConnect);
 	}
-
-	if(id>1){
-		actionNames[id-2]->disconnect();
-		actionDescriptions[id-2]->disconnect();
+	if(id>0){
+		removeActionNameConnect = connect(actionNames[id-1],&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
+		removeActionDescConnect = connect(actionDescriptions[id-1],&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
 	}
 }
 
@@ -364,11 +404,15 @@ void MainWindow::removeActionSlot(){
 		actionDescriptions.removeLast();
 		actionLayouts.removeLast();
 
-		connect(actionNames.last(),&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
-		connect(actionDescriptions.last(),&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
-		if(actionNames.count()>1){
-			connect(actionNames.at(actionNames.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
-			connect(actionDescriptions.at(actionDescriptions.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
+		addActionNameConnect = connect(actionNames.last(),&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
+		addActionDescConnect = connect(actionDescriptions.last(),&QLineEdit::textChanged,this,&MainWindow::addActionSlot);
+		if(actionNames.count() == 1){
+			actionNames.last()->disconnect(removeActionNameConnect);
+			actionDescriptions.last()->disconnect(removeActionDescConnect);
+		}
+		if(actionNames.count() > 1){
+			removeActionNameConnect = connect(actionNames.at(actionNames.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
+			removeActionDescConnect = connect(actionDescriptions.at(actionDescriptions.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
 		}
 	}
 }
@@ -420,7 +464,7 @@ void MainWindow::monsterAction_textChanged(const QString &text){
 }
 
 void MainWindow::monsterAttack_textChanged(const QString &text){
-	if(text == ""){
+	if(text != ""){
 
 	}
 }

@@ -42,8 +42,10 @@ private:
 	QList<QHBoxLayout*> actionLayouts;
 	QList<QLineEdit*> actionNames;
 	QList<QLineEdit*> actionDescriptions;
-	QMetaObject::Connection addActionConnect;
-	QMetaObject::Connection removeActionConnect;
+	QMetaObject::Connection addActionNameConnect;
+	QMetaObject::Connection addActionDescConnect;
+	QMetaObject::Connection removeActionNameConnect;
+	QMetaObject::Connection removeActionDescConnect;
 
 	//Attacks
 	QList<QHBoxLayout*> attackLayouts;
