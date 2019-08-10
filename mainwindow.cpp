@@ -13,7 +13,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		connect(ui->monsterActionName1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
 		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
 
-		//Connect editingFinished() signals to updateLatex()
+		connect(ui->monsterAttackName1,&QLineEdit::textChanged,this,&MainWindow::monsterAttack_textChanged);
+
+		//Connect signals to updateLatex()
 		connect(ui->monsterName,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 		connect(ui->monsterType,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 		connect(ui->monsterAC,&QLineEdit::textChanged,monster,&Monster::updateLatex);
@@ -42,7 +44,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
 		connect(ui->monsterAttackType1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
-		//TODO: Finish all latex updates (+in dynamic ui)
+		connect(ui->monsterAttackDistance1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
+		connect(ui->monsterAttackName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackReach1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackRange1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackTargets1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackModifier1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackDamage1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackDamageType1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
+		connect(ui->monsterAttackPlusDamage1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackPlusDamageType1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
+		connect(ui->monsterAttackOrDamage1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackOrDamageWhen1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterAttackExtra1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
 		//Request input box data
 		connect(monster,&Monster::requestInputData,this,&MainWindow::inputDataRequested);
@@ -464,8 +478,16 @@ void MainWindow::monsterAction_textChanged(const QString &text){
 }
 
 void MainWindow::monsterAttack_textChanged(const QString &text){
-	if(text != ""){
+	if(text != "" && attackLayouts.count() == 0){
+		addAttackSlot();
+	}else if(attackLayouts.count() == 1 && attackNames.last()->text() == "" && attackReaches.last()->text() == "" &&
+			 attackRanges.last()->text() == "" && attackTargets.last()->text() == "" && attackModifiers.last()->text() == "" &&
+			 attackModifiers.last()->text() == "" && attackDamages.last()->text() == "" && attackPlusDamages.last()->text() == "" &&
+			 attackOrDamages.last()->text() == "" && attackOrDamageWhens.last()->text() == "" && attackExtras.last()->text() == ""){
+		attackLayouts.last()->deleteLater();
 
+		attackTypes.removeLast();
+		//TODO: etc.
 	}
 }
 
