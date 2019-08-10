@@ -487,6 +487,7 @@ void MainWindow::monsterAttack_textChanged(const QString &text){
 		attackLayouts.last()->deleteLater();
 
 		attackTypes.removeLast();
+		attackDistances.removeLast();
 		//TODO: etc.
 	}
 }
