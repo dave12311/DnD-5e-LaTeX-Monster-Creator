@@ -573,7 +573,20 @@ void MainWindow::addAttackSlot(){
 }
 
 void MainWindow::removeAttackSlot(){
+	if(checkLastLineEditEmpty(attackNames) && checkLastLineEditEmpty(attackReaches) && checkLastLineEditEmpty(attackRanges) &&
+			checkLastLineEditEmpty(attackTargets) && checkLastLineEditEmpty(attackModifiers) && checkLastLineEditEmpty(attackDamages) &&
+			checkLastLineEditEmpty(attackPlusDamages) && checkLastLineEditEmpty(attackOrDamages) && checkLastLineEditEmpty(attackOrDamageWhens) &&
+			checkLastLineEditEmpty(attackExtras)){
+		removeLastAttack();
 
+		addAttackConnect = connect(attackNames.last(),&QLineEdit::textChanged,this,&MainWindow::addAttackSlot);
+		if(attackNames.count() == 1){
+			attackNames.last()->disconnect(removeAttackConnect);
+		}
+		if(attackNames.count() > 1){
+			removeAttackConnect = connect(attackNames.at(attackNames.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeAttackSlot);
+		}
+	}
 }
 
 void MainWindow::on_monsterInnateSpellcasting_textChanged(const QString &arg1){
@@ -629,67 +642,7 @@ void MainWindow::on_monsterAttackName1_textChanged(const QString &arg1){
 			 attackRanges.last()->text() == "" && attackTargets.last()->text() == "" && attackModifiers.last()->text() == "" &&
 			 attackModifiers.last()->text() == "" && attackDamages.last()->text() == "" && attackPlusDamages.last()->text() == "" &&
 			 attackOrDamages.last()->text() == "" && attackOrDamageWhens.last()->text() == "" && attackExtras.last()->text() == ""){
-		attackTypes.last()->deleteLater();
-		attackDistances.last()->deleteLater();
-		attackNames.last()->deleteLater();
-		attackReaches.last()->deleteLater();
-		attackRanges.last()->deleteLater();
-		attackTargets.last()->deleteLater();
-		attackModifiers.last()->deleteLater();
-		attackDamages.last()->deleteLater();
-		attackDamageTypes.last()->deleteLater();
-		attackPlusDamages.last()->deleteLater();
-		attackPlusDamageTypes.last()->deleteLater();
-		attackOrDamages.last()->deleteLater();
-		attackOrDamageWhens.last()->deleteLater();
-		attackExtras.last()->deleteLater();
-		attackLines.last()->deleteLater();
-		attackTypeLabels.last()->deleteLater();
-		attackDistanceLabels.last()->deleteLater();
-		attackNameLabels.last()->deleteLater();
-		attackReachLabels.last()->deleteLater();
-		attackRangeLabels.last()->deleteLater();
-		attackTargetLabels.last()->deleteLater();
-		attackModifierLabels.last()->deleteLater();
-		attackDamageLabels.last()->deleteLater();
-		attackDamageTypeLabels.last()->deleteLater();
-		attackPlusDamageLabels.last()->deleteLater();
-		attackPlusDamageTypeLabels.last()->deleteLater();
-		attackOrDamageLabels.last()->deleteLater();
-		attackOrDamageWhenLabels.last()->deleteLater();
-		attackExtraLabels.last()->deleteLater();
-		attackLayouts.last()->deleteLater();
-
-		attackTypes.removeLast();
-		attackDistances.removeLast();
-		attackNames.removeLast();
-		attackReaches.removeLast();
-		attackRanges.removeLast();
-		attackTargets.removeLast();
-		attackModifiers.removeLast();
-		attackDamages.removeLast();
-		attackDamageTypes.removeLast();
-		attackPlusDamages.removeLast();
-		attackPlusDamageTypes.removeLast();
-		attackOrDamages.removeLast();
-		attackOrDamageWhens.removeLast();
-		attackExtras.removeLast();
-		attackLines.removeLast();
-		attackTypeLabels.removeLast();
-		attackDistanceLabels.removeLast();
-		attackNameLabels.removeLast();
-		attackReachLabels.removeLast();
-		attackRangeLabels.removeLast();
-		attackTargetLabels.removeLast();
-		attackModifierLabels.removeLast();
-		attackDamageLabels.removeLast();
-		attackDamageTypeLabels.removeLast();
-		attackPlusDamageLabels.removeLast();
-		attackPlusDamageTypeLabels.removeLast();
-		attackOrDamageLabels.removeLast();
-		attackOrDamageWhenLabels.removeLast();
-		attackExtraLabels.removeLast();
-		attackLayouts.removeLast();
+		removeLastAttack();
 	}
 }
 
@@ -720,5 +673,77 @@ void MainWindow::spellComboBoxChange(){
 			spellSpinBoxes[i]->setValue(0);
 			spellSpinBoxes[i]->setVisible(true);
 		}
+	}
+}
+
+void MainWindow::removeLastAttack(){
+	attackTypes.last()->deleteLater();
+	attackDistances.last()->deleteLater();
+	attackNames.last()->deleteLater();
+	attackReaches.last()->deleteLater();
+	attackRanges.last()->deleteLater();
+	attackTargets.last()->deleteLater();
+	attackModifiers.last()->deleteLater();
+	attackDamages.last()->deleteLater();
+	attackDamageTypes.last()->deleteLater();
+	attackPlusDamages.last()->deleteLater();
+	attackPlusDamageTypes.last()->deleteLater();
+	attackOrDamages.last()->deleteLater();
+	attackOrDamageWhens.last()->deleteLater();
+	attackExtras.last()->deleteLater();
+	attackLines.last()->deleteLater();
+	attackTypeLabels.last()->deleteLater();
+	attackDistanceLabels.last()->deleteLater();
+	attackNameLabels.last()->deleteLater();
+	attackReachLabels.last()->deleteLater();
+	attackRangeLabels.last()->deleteLater();
+	attackTargetLabels.last()->deleteLater();
+	attackModifierLabels.last()->deleteLater();
+	attackDamageLabels.last()->deleteLater();
+	attackDamageTypeLabels.last()->deleteLater();
+	attackPlusDamageLabels.last()->deleteLater();
+	attackPlusDamageTypeLabels.last()->deleteLater();
+	attackOrDamageLabels.last()->deleteLater();
+	attackOrDamageWhenLabels.last()->deleteLater();
+	attackExtraLabels.last()->deleteLater();
+	attackLayouts.last()->deleteLater();
+
+	attackTypes.removeLast();
+	attackDistances.removeLast();
+	attackNames.removeLast();
+	attackReaches.removeLast();
+	attackRanges.removeLast();
+	attackTargets.removeLast();
+	attackModifiers.removeLast();
+	attackDamages.removeLast();
+	attackDamageTypes.removeLast();
+	attackPlusDamages.removeLast();
+	attackPlusDamageTypes.removeLast();
+	attackOrDamages.removeLast();
+	attackOrDamageWhens.removeLast();
+	attackExtras.removeLast();
+	attackLines.removeLast();
+	attackTypeLabels.removeLast();
+	attackDistanceLabels.removeLast();
+	attackNameLabels.removeLast();
+	attackReachLabels.removeLast();
+	attackRangeLabels.removeLast();
+	attackTargetLabels.removeLast();
+	attackModifierLabels.removeLast();
+	attackDamageLabels.removeLast();
+	attackDamageTypeLabels.removeLast();
+	attackPlusDamageLabels.removeLast();
+	attackPlusDamageTypeLabels.removeLast();
+	attackOrDamageLabels.removeLast();
+	attackOrDamageWhenLabels.removeLast();
+	attackExtraLabels.removeLast();
+	attackLayouts.removeLast();
+}
+
+bool MainWindow::checkLastLineEditEmpty(QList<QLineEdit*> &list){
+	if(list.at(list.count()-2)->text() == ""){
+		return true;
+	}else{
+		return false;
 	}
 }

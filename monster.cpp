@@ -202,6 +202,9 @@ void Monster::updateLatex(){
 		}
 	}
 
+	//Attacks
+
+
 	//End
 	latexString.append("\\end{DndMonster}");
 	emit sendText(latexString);

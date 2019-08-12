@@ -84,6 +84,9 @@ private:
 	QMetaObject::Connection addAttackConnect;
 	QMetaObject::Connection removeAttackConnect;
 
+	void removeLastAttack();
+	bool checkLastLineEditEmpty(QList<QLineEdit*> &list);
+
 public slots:
 	//UI
 	void monsterAction_textChanged(const QString &text);
