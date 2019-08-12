@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLayout>
 #include <QSpinBox>
+#include <QLine>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
 		ui->setupUi(this);
@@ -12,8 +13,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		//Connect GUI signals
 		connect(ui->monsterActionName1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
 		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
-
-		connect(ui->monsterAttackName1,&QLineEdit::textChanged,this,&MainWindow::monsterAttack_textChanged);
 
 		//Connect signals to updateLatex()
 		connect(ui->monsterName,&QLineEdit::textChanged,monster,&Monster::updateLatex);
@@ -360,7 +359,7 @@ void MainWindow::removeSpellSlot(const QString &text){
 
 void MainWindow::addActionSlot(){
 	//Disconnect sender to prevent spamming
-	if(sender()->objectName() != "monsterActionName1" && QObject::sender()->objectName() != "monsterActionDesc1"){
+	if(sender()->objectName() != "monsterActionName1" && sender()->objectName() != "monsterActionDesc1"){
 		sender()->disconnect(addActionNameConnect);
 		sender()->disconnect(addActionDescConnect);
 	}
@@ -431,6 +430,152 @@ void MainWindow::removeActionSlot(){
 	}
 }
 
+void MainWindow::addAttackSlot(){
+	//Disconnect sender to prevent spamming
+	if(sender()->objectName() != "monsterAttackName1"){
+		sender()->disconnect(addAttackConnect);
+	}
+
+	attackLayouts.append(new QFormLayout);
+	attackTypes.append(new QComboBox);
+	attackDistances.append(new QComboBox);
+	attackNames.append(new QLineEdit);
+	attackReaches.append(new QLineEdit);
+	attackRanges.append(new QLineEdit);
+	attackTargets.append(new QLineEdit);
+	attackModifiers.append(new QLineEdit);
+	attackDamages.append(new QLineEdit);
+	attackDamageTypes.append(new QComboBox);
+	attackPlusDamages.append(new QLineEdit);
+	attackPlusDamageTypes.append(new QComboBox);
+	attackOrDamages.append(new QLineEdit);
+	attackOrDamageWhens.append(new QLineEdit);
+	attackExtras.append(new QLineEdit);
+	attackTypeLabels.append(new QLabel);
+	attackDistanceLabels.append(new QLabel);
+	attackNameLabels.append(new QLabel);
+	attackReachLabels.append(new QLabel);
+	attackRangeLabels.append(new QLabel);
+	attackTargetLabels.append(new QLabel);
+	attackModifierLabels.append(new QLabel);
+	attackDamageLabels.append(new QLabel);
+	attackDamageTypeLabels.append(new QLabel);
+	attackPlusDamageLabels.append(new QLabel);
+	attackPlusDamageTypeLabels.append(new QLabel);
+	attackOrDamageLabels.append(new QLabel);
+	attackOrDamageWhenLabels.append(new QLabel);
+	attackExtraLabels.append(new QLabel);
+	attackLines.append(new QFrame);
+	int id = attackLayouts.indexOf(attackLayouts.last());
+
+	//Set properties
+	attackTypes[id]->addItem("Weapon");
+	attackTypes[id]->addItem("Spell");
+
+	attackDistances[id]->addItem("Melee");
+	attackDistances[id]->addItem("Ranged");
+	attackDistances[id]->addItem("Both");
+
+	attackDamageTypes[id]->addItem("Acid");
+	attackDamageTypes[id]->addItem("Bludgeoning");
+	attackDamageTypes[id]->addItem("Cold");
+	attackDamageTypes[id]->addItem("Fire");
+	attackDamageTypes[id]->addItem("Force");
+	attackDamageTypes[id]->addItem("Lightning");
+	attackDamageTypes[id]->addItem("Necrotic");
+	attackDamageTypes[id]->addItem("Piercing");
+	attackDamageTypes[id]->addItem("Poison");
+	attackDamageTypes[id]->addItem("Psychic");
+	attackDamageTypes[id]->addItem("Radiant");
+	attackDamageTypes[id]->addItem("Slashing");
+	attackDamageTypes[id]->addItem("Thunder");
+
+	attackPlusDamageTypes[id]->addItem("Acid");
+	attackPlusDamageTypes[id]->addItem("Bludgeoning");
+	attackPlusDamageTypes[id]->addItem("Cold");
+	attackPlusDamageTypes[id]->addItem("Fire");
+	attackPlusDamageTypes[id]->addItem("Force");
+	attackPlusDamageTypes[id]->addItem("Lightning");
+	attackPlusDamageTypes[id]->addItem("Necrotic");
+	attackPlusDamageTypes[id]->addItem("Piercing");
+	attackPlusDamageTypes[id]->addItem("Poison");
+	attackPlusDamageTypes[id]->addItem("Psychic");
+	attackPlusDamageTypes[id]->addItem("Radiant");
+	attackPlusDamageTypes[id]->addItem("Slashing");
+	attackPlusDamageTypes[id]->addItem("Thunder");
+
+	attackLines[id]->setFrameShape(QFrame::HLine);
+	attackLines[id]->setFrameShadow(QFrame::Sunken);
+
+	attackTypeLabels[id]->setText("Attack Type");
+	attackDistanceLabels[id]->setText("Distance");
+	attackNameLabels[id]->setText("Name");
+	attackReachLabels[id]->setText("Reach");
+	attackRangeLabels[id]->setText("Range");
+	attackTargetLabels[id]->setText("Targets");
+	attackModifierLabels[id]->setText("Modifier");
+	attackDamageLabels[id]->setText("Damage");
+	attackDamageTypeLabels[id]->setText("Damage Type");
+	attackPlusDamageLabels[id]->setText("Plus Damage");
+	attackPlusDamageTypeLabels[id]->setText("Plus Damage Type");
+	attackOrDamageLabels[id]->setText("Or Damage");
+	attackOrDamageWhenLabels[id]->setText("Or Damage When");
+	attackExtraLabels[id]->setText("Extra");
+
+	attackRanges[id]->setHidden(true);
+	attackRangeLabels[id]->setHidden(true);
+
+	//Update Latex
+	connect(attackTypes[id],QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
+	connect(attackDistances[id],QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
+	connect(attackNames[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackReaches[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackRanges[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackTargets[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackModifiers[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackDamages[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackDamageTypes[id],QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
+	connect(attackPlusDamages[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackPlusDamageTypes[id],QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
+	connect(attackOrDamages[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackOrDamageWhens[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(attackExtras[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+
+	ui->attacks->addWidget(attackLines[id]);
+
+	//Add new layout
+	ui->attacks->addLayout(attackLayouts[id]);
+
+	//Add elements
+	attackLayouts[id]->addRow(attackTypeLabels[id] ,attackTypes[id]);
+	attackLayouts[id]->addRow(attackDistanceLabels[id], attackDistances[id]);
+	attackLayouts[id]->addRow(attackNameLabels[id], attackNames[id]);
+	attackLayouts[id]->addRow(attackReachLabels[id], attackReaches[id]);
+	attackLayouts[id]->addRow(attackRangeLabels[id], attackRanges[id]);
+	attackLayouts[id]->addRow(attackTargetLabels[id], attackTargets[id]);
+	attackLayouts[id]->addRow(attackModifierLabels[id], attackModifiers[id]);
+	attackLayouts[id]->addRow(attackDamageLabels[id], attackDamages[id]);
+	attackLayouts[id]->addRow(attackDamageTypeLabels[id], attackDamageTypes[id]);
+	attackLayouts[id]->addRow(attackPlusDamageLabels[id], attackPlusDamages[id]);
+	attackLayouts[id]->addRow(attackPlusDamageTypeLabels[id], attackPlusDamageTypes[id]);
+	attackLayouts[id]->addRow(attackOrDamageLabels[id], attackOrDamages[id]);
+	attackLayouts[id]->addRow(attackOrDamageWhenLabels[id], attackOrDamageWhens[id]);
+	attackLayouts[id]->addRow(attackExtraLabels[id], attackExtras[id]);
+
+	//Setup dynamic UI creation
+	addAttackConnect = connect(attackNames[id],&QLineEdit::textChanged,this,&MainWindow::addAttackSlot);
+	if(id > 1){
+		attackNames[id-2]->disconnect(removeAttackConnect);
+	}
+	if(id > 0){
+		removeAttackConnect = connect(attackNames[id-1],&QLineEdit::textChanged,this,&MainWindow::removeAttackSlot);
+	}
+}
+
+void MainWindow::removeAttackSlot(){
+
+}
+
 void MainWindow::on_monsterInnateSpellcasting_textChanged(const QString &arg1){
 	if(arg1 != "" && innateSpellLayouts.count() == 0){
 		addInnateSpellSlot();
@@ -477,21 +622,76 @@ void MainWindow::monsterAction_textChanged(const QString &text){
 	}
 }
 
-void MainWindow::monsterAttack_textChanged(const QString &text){
-	if(text != "" && attackLayouts.count() == 0){
+void MainWindow::on_monsterAttackName1_textChanged(const QString &arg1){
+	if(arg1 != "" && attackLayouts.count() == 0){
 		addAttackSlot();
-	}else if(attackLayouts.count() == 1 && attackNames.last()->text() == "" && attackReaches.last()->text() == "" &&
+	}else if(arg1 == "" && attackLayouts.count() == 1 && attackNames.last()->text() == "" && attackReaches.last()->text() == "" &&
 			 attackRanges.last()->text() == "" && attackTargets.last()->text() == "" && attackModifiers.last()->text() == "" &&
 			 attackModifiers.last()->text() == "" && attackDamages.last()->text() == "" && attackPlusDamages.last()->text() == "" &&
 			 attackOrDamages.last()->text() == "" && attackOrDamageWhens.last()->text() == "" && attackExtras.last()->text() == ""){
+		attackTypes.last()->deleteLater();
+		attackDistances.last()->deleteLater();
+		attackNames.last()->deleteLater();
+		attackReaches.last()->deleteLater();
+		attackRanges.last()->deleteLater();
+		attackTargets.last()->deleteLater();
+		attackModifiers.last()->deleteLater();
+		attackDamages.last()->deleteLater();
+		attackDamageTypes.last()->deleteLater();
+		attackPlusDamages.last()->deleteLater();
+		attackPlusDamageTypes.last()->deleteLater();
+		attackOrDamages.last()->deleteLater();
+		attackOrDamageWhens.last()->deleteLater();
+		attackExtras.last()->deleteLater();
+		attackLines.last()->deleteLater();
+		attackTypeLabels.last()->deleteLater();
+		attackDistanceLabels.last()->deleteLater();
+		attackNameLabels.last()->deleteLater();
+		attackReachLabels.last()->deleteLater();
+		attackRangeLabels.last()->deleteLater();
+		attackTargetLabels.last()->deleteLater();
+		attackModifierLabels.last()->deleteLater();
+		attackDamageLabels.last()->deleteLater();
+		attackDamageTypeLabels.last()->deleteLater();
+		attackPlusDamageLabels.last()->deleteLater();
+		attackPlusDamageTypeLabels.last()->deleteLater();
+		attackOrDamageLabels.last()->deleteLater();
+		attackOrDamageWhenLabels.last()->deleteLater();
+		attackExtraLabels.last()->deleteLater();
 		attackLayouts.last()->deleteLater();
 
 		attackTypes.removeLast();
 		attackDistances.removeLast();
-		//TODO: etc.
+		attackNames.removeLast();
+		attackReaches.removeLast();
+		attackRanges.removeLast();
+		attackTargets.removeLast();
+		attackModifiers.removeLast();
+		attackDamages.removeLast();
+		attackDamageTypes.removeLast();
+		attackPlusDamages.removeLast();
+		attackPlusDamageTypes.removeLast();
+		attackOrDamages.removeLast();
+		attackOrDamageWhens.removeLast();
+		attackExtras.removeLast();
+		attackLines.removeLast();
+		attackTypeLabels.removeLast();
+		attackDistanceLabels.removeLast();
+		attackNameLabels.removeLast();
+		attackReachLabels.removeLast();
+		attackRangeLabels.removeLast();
+		attackTargetLabels.removeLast();
+		attackModifierLabels.removeLast();
+		attackDamageLabels.removeLast();
+		attackDamageTypeLabels.removeLast();
+		attackPlusDamageLabels.removeLast();
+		attackPlusDamageTypeLabels.removeLast();
+		attackOrDamageLabels.removeLast();
+		attackOrDamageWhenLabels.removeLast();
+		attackExtraLabels.removeLast();
+		attackLayouts.removeLast();
 	}
 }
-
 
 void MainWindow::on_monsterAttackDistance1_currentTextChanged(const QString &arg1){
 	if(arg1 == "Melee"){

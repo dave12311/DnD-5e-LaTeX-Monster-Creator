@@ -6,6 +6,8 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QComboBox>
+#include <QFormLayout>
+#include <QLabel>
 #include "monster.h"
 
 namespace Ui {
@@ -48,7 +50,7 @@ private:
 	QMetaObject::Connection removeActionDescConnect;
 
 	//Attacks
-	QList<QHBoxLayout*> attackLayouts;
+	QList<QFormLayout*> attackLayouts;
 	QList<QComboBox*> attackTypes;
 	QList<QComboBox*> attackDistances;
 	QList<QLineEdit*> attackNames;
@@ -63,13 +65,28 @@ private:
 	QList<QLineEdit*> attackOrDamages;
 	QList<QLineEdit*> attackOrDamageWhens;
 	QList<QLineEdit*> attackExtras;
+	QList<QFrame*> attackLines;
+	QList<QLabel*> attackTypeLabels;
+	QList<QLabel*> attackDistanceLabels;
+	QList<QLabel*> attackNameLabels;
+	QList<QLabel*> attackReachLabels;
+	QList<QLabel*> attackRangeLabels;
+	QList<QLabel*> attackTargetLabels;
+	QList<QLabel*> attackModifierLabels;
+	QList<QLabel*> attackDamageLabels;
+	QList<QLabel*> attackDamageTypeLabels;
+	QList<QLabel*> attackPlusDamageLabels;
+	QList<QLabel*> attackPlusDamageTypeLabels;
+	QList<QLabel*> attackOrDamageLabels;
+	QList<QLabel*> attackOrDamageWhenLabels;
+	QList<QLabel*> attackExtraLabels;
+
 	QMetaObject::Connection addAttackConnect;
 	QMetaObject::Connection removeAttackConnect;
 
 public slots:
 	//UI
 	void monsterAction_textChanged(const QString &text);
-	void monsterAttack_textChanged(const QString &text);
 
 	//Write text in the GUI
 	//TODO: change parameter
@@ -88,6 +105,10 @@ public slots:
 	void addActionSlot();
 	void removeActionSlot();
 
+	//Attacks
+	void addAttackSlot();
+	void removeAttackSlot();
+
 signals:
 	//Send input data
 	void sendInputData(InputData *data);
@@ -98,6 +119,7 @@ private slots:
 	void on_monsterAttackDistance1_currentTextChanged(const QString &arg1);
 
 	void spellComboBoxChange();
+	void on_monsterAttackName1_textChanged(const QString &arg1);
 };
 
 #endif // MAINWINDOW_H
