@@ -525,6 +525,9 @@ void MainWindow::addAttackSlot(){
 	attackRanges[id]->setHidden(true);
 	attackRangeLabels[id]->setHidden(true);
 
+	//Connect Combo Box change
+	connect(attackDistances[id],QOverload<int>::of(&QComboBox::currentIndexChanged),this,&MainWindow::attackDistanceBoxChange);
+
 	//Update Latex
 	connect(attackTypes[id],QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
 	connect(attackDistances[id],QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
@@ -652,11 +655,13 @@ void MainWindow::on_monsterAttackDistance1_currentTextChanged(const QString &arg
 		ui->label_attackReach1->setVisible(true);
 		ui->monsterAttackRange1->setVisible(false);
 		ui->label_attackRange1->setVisible(false);
+		ui->monsterAttackRange1->setText("");
 	}else if(arg1 == "Ranged"){
 		ui->monsterAttackReach1->setVisible(false);
 		ui->label_attackReach1->setVisible(false);
 		ui->monsterAttackRange1->setVisible(true);
 		ui->label_attackRange1->setVisible(true);
+		ui->monsterAttackReach1->setText("");
 	}else{
 		ui->monsterAttackReach1->setVisible(true);
 		ui->label_attackReach1->setVisible(true);
@@ -675,6 +680,30 @@ void MainWindow::spellComboBoxChange(){
 		}
 	}
 }
+
+void MainWindow::attackDistanceBoxChange(){
+	for(int i = 0; i < attackLayouts.count(); i++){
+		if(attackDistances[i]->currentIndex() == 0){
+			attackReachLabels[i]->setVisible(true);
+			attackReaches[i]->setVisible(true);
+			attackRangeLabels[i]->setVisible(false);
+			attackRanges[i]->setVisible(false);
+			attackRanges[i]->setText("");
+		}else if(attackDistances[i]->currentIndex() == 1){
+			attackReachLabels[i]->setVisible(false);
+			attackReaches[i]->setVisible(false);
+			attackRangeLabels[i]->setVisible(true);
+			attackRanges[i]->setVisible(true);
+			attackReaches[i]->setText("");
+		}else{
+			attackReachLabels[i]->setVisible(true);
+			attackReaches[i]->setVisible(true);
+			attackRangeLabels[i]->setVisible(true);
+			attackRanges[i]->setVisible(true);
+		}
+	}
+}
+
 
 void MainWindow::removeLastAttack(){
 	attackTypes.last()->deleteLater();
@@ -741,7 +770,7 @@ void MainWindow::removeLastAttack(){
 }
 
 bool MainWindow::checkLastLineEditEmpty(QList<QLineEdit*> &list){
-	if(list.at(list.count()-2)->text() == ""){
+	if(list.at(list.count()-1)->text() == ""){
 		return true;
 	}else{
 		return false;
