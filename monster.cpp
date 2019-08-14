@@ -85,7 +85,7 @@ void Monster::updateLatex(){
 			latexString.append(inputData->basicData[monsterCHA]);
 			latexString.append(",\n");
 		}
-		latexString.append("\t]\n\n");
+        latexString.append("\t]\n\n");
 	}
 
 	//Details

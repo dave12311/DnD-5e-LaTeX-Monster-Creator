@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.9.2, 2019-08-12T21:07:29. -->
+<!-- Written by QtCreator 4.9.2, 2019-08-13T22:53:32. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{290cb0de-35db-496e-a655-3067998b0970}</value>
+  <value type="QByteArray">{665656b7-3604-4128-b542-fe04c1db16e1}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -19,7 +19,7 @@
    <valuemap type="QVariantMap" key="EditorConfiguration.CodeStyle.0">
     <value type="QString" key="language">Cpp</value>
     <valuemap type="QVariantMap" key="value">
-     <value type="QByteArray" key="CurrentPreferences">qt2</value>
+     <value type="QByteArray" key="CurrentPreferences">CppGlobal</value>
     </valuemap>
    </valuemap>
    <valuemap type="QVariantMap" key="EditorConfiguration.CodeStyle.1">
@@ -39,7 +39,7 @@
    <value type="int" key="EditorConfiguration.PaddingMode">1</value>
    <value type="bool" key="EditorConfiguration.ScrollWheelZooming">true</value>
    <value type="bool" key="EditorConfiguration.ShowMargin">false</value>
-   <value type="int" key="EditorConfiguration.SmartBackspaceBehavior">2</value>
+   <value type="int" key="EditorConfiguration.SmartBackspaceBehavior">0</value>
    <value type="bool" key="EditorConfiguration.SmartSelectionChanging">true</value>
    <value type="bool" key="EditorConfiguration.SpacesForTabs">false</value>
    <value type="int" key="EditorConfiguration.TabKeyBehavior">0</value>
@@ -49,7 +49,7 @@
    <value type="bool" key="EditorConfiguration.addFinalNewLine">true</value>
    <value type="bool" key="EditorConfiguration.cleanIndentation">true</value>
    <value type="bool" key="EditorConfiguration.cleanWhitespace">true</value>
-   <value type="bool" key="EditorConfiguration.inEntireDocument">true</value>
+   <value type="bool" key="EditorConfiguration.inEntireDocument">false</value>
   </valuemap>
  </data>
  <data>
@@ -57,11 +57,6 @@
   <valuemap type="QVariantMap">
    <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey"/>
    <value type="bool" key="ClangCodeModel.UseGlobalConfig">true</value>
-   <value type="bool" key="ClangTools.BuildBeforeAnalysis">false</value>
-   <valuelist type="QVariantList" key="ClangTools.SelectedDirs"/>
-   <valuelist type="QVariantList" key="ClangTools.SelectedFiles"/>
-   <valuelist type="QVariantList" key="ClangTools.SuppressedDiagnostics"/>
-   <value type="bool" key="ClangTools.UseGlobalSettings">true</value>
   </valuemap>
  </data>
  <data>
@@ -69,7 +64,7 @@
   <valuemap type="QVariantMap">
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{d7570246-879d-489d-a81e-1d25ea78cf28}</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{31f186ea-5f6c-44a2-a156-fc3eb558e5f2}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>

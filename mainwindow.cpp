@@ -576,7 +576,7 @@ void MainWindow::addAttackSlot(){
 }
 
 void MainWindow::removeAttackSlot(){
-	if(checkLastLineEditEmpty(attackNames) && checkLastLineEditEmpty(attackReaches) && checkLastLineEditEmpty(attackRanges) &&
+    if(attackNames.at(attackNames.count()-2)->text() == "" && checkLastLineEditEmpty(attackNames) && checkLastLineEditEmpty(attackReaches) && checkLastLineEditEmpty(attackRanges) &&
 			checkLastLineEditEmpty(attackTargets) && checkLastLineEditEmpty(attackModifiers) && checkLastLineEditEmpty(attackDamages) &&
 			checkLastLineEditEmpty(attackPlusDamages) && checkLastLineEditEmpty(attackOrDamages) && checkLastLineEditEmpty(attackOrDamageWhens) &&
 			checkLastLineEditEmpty(attackExtras)){
