@@ -119,8 +119,6 @@ signals:
 private slots:
 	void on_monsterInnateSpellcasting_textChanged(const QString &arg1);
 	void on_monsterSpellcasting_textChanged(const QString &arg1);
-	void on_monsterAttackDistance1_currentTextChanged(const QString &arg1);
-	void on_monsterAttackName1_textChanged(const QString &arg1);
 
 	void spellComboBoxChange();
 	void attackDistanceBoxChange();

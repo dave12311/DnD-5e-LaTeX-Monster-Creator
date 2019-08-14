@@ -9,6 +9,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
 		ui->setupUi(this);
 		monster = new Monster;
+        addAttackSlot();
 
 		//Connect GUI signals
 		connect(ui->monsterActionName1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
@@ -42,21 +43,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		connect(ui->monsterActionName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
-		connect(ui->monsterAttackType1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
-		connect(ui->monsterAttackDistance1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
-		connect(ui->monsterAttackName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackReach1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackRange1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackTargets1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackModifier1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackDamage1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackDamageType1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
-		connect(ui->monsterAttackPlusDamage1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackPlusDamageType1,QOverload<int>::of(&QComboBox::currentIndexChanged),monster,&Monster::updateLatex);
-		connect(ui->monsterAttackOrDamage1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackOrDamageWhen1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAttackExtra1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-
 		//Request input box data
 		connect(monster,&Monster::requestInputData,this,&MainWindow::inputDataRequested);
 
@@ -65,44 +51,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 		//Connect functions to display text in the GUI
 		connect(monster,&Monster::sendText,this,&MainWindow::writeLatexOut);
-
-		//Setup default ui
-		ui->monsterAttackType1->addItem("Weapon");
-		ui->monsterAttackType1->addItem("Spell");
-
-		ui->monsterAttackDistance1->addItem("Melee");
-		ui->monsterAttackDistance1->addItem("Ranged");
-		ui->monsterAttackDistance1->addItem("Both");
-		ui->monsterAttackRange1->setHidden(true);
-		ui->label_attackRange1->setHidden(true);
-
-		ui->monsterAttackDamageType1->addItem("Acid");
-		ui->monsterAttackDamageType1->addItem("Bludgeoning");
-		ui->monsterAttackDamageType1->addItem("Cold");
-		ui->monsterAttackDamageType1->addItem("Fire");
-		ui->monsterAttackDamageType1->addItem("Force");
-		ui->monsterAttackDamageType1->addItem("Lightning");
-		ui->monsterAttackDamageType1->addItem("Necrotic");
-		ui->monsterAttackDamageType1->addItem("Piercing");
-		ui->monsterAttackDamageType1->addItem("Poison");
-		ui->monsterAttackDamageType1->addItem("Psychic");
-		ui->monsterAttackDamageType1->addItem("Radiant");
-		ui->monsterAttackDamageType1->addItem("Slashing");
-		ui->monsterAttackDamageType1->addItem("Thunder");
-
-		ui->monsterAttackPlusDamageType1->addItem("Acid");
-		ui->monsterAttackPlusDamageType1->addItem("Bludgeoning");
-		ui->monsterAttackPlusDamageType1->addItem("Cold");
-		ui->monsterAttackPlusDamageType1->addItem("Fire");
-		ui->monsterAttackPlusDamageType1->addItem("Force");
-		ui->monsterAttackPlusDamageType1->addItem("Lightning");
-		ui->monsterAttackPlusDamageType1->addItem("Necrotic");
-		ui->monsterAttackPlusDamageType1->addItem("Piercing");
-		ui->monsterAttackPlusDamageType1->addItem("Poison");
-		ui->monsterAttackPlusDamageType1->addItem("Psychic");
-		ui->monsterAttackPlusDamageType1->addItem("Radiant");
-		ui->monsterAttackPlusDamageType1->addItem("Slashing");
-		ui->monsterAttackPlusDamageType1->addItem("Thunder");
 }
 
 MainWindow::~MainWindow(){
@@ -172,21 +120,6 @@ void MainWindow::inputDataRequested(){
 
 	//Attacks
 	Attack tmpAttack;
-	tmpAttack.typeIndex = ui->monsterAttackType1->currentIndex();
-	tmpAttack.distanceIndex = ui->monsterAttackDistance1->currentIndex();
-	tmpAttack.name = ui->monsterAttackName1->text();
-	tmpAttack.reach = ui->monsterAttackReach1->text();
-	tmpAttack.range = ui->monsterAttackRange1->text();
-	tmpAttack.targets = ui->monsterAttackTargets1->text();
-	tmpAttack.modifier = ui->monsterAttackModifier1->text();
-	tmpAttack.damage = ui->monsterAttackDamage1->text();
-	tmpAttack.damageTypeIndex = ui->monsterAttackDamageType1->currentIndex();
-	tmpAttack.plusDamage = ui->monsterAttackPlusDamage1->text();
-	tmpAttack.plusDamageTypeIndex = ui->monsterAttackPlusDamageType1->currentIndex();
-	tmpAttack.orDamage = ui->monsterAttackOrDamage1->text();
-	tmpAttack.orDamageWhen = ui->monsterAttackOrDamageWhen1->text();
-	tmpAttack.extra = ui->monsterAttackExtra1->text();
-	inputData.attacks.append(tmpAttack);
 	for(int i = 0; i < attackLayouts.count(); i++){
 		tmpAttack.typeIndex = attackTypes[i]->currentIndex();
 		tmpAttack.distanceIndex = attackDistances[i]->currentIndex();
@@ -432,9 +365,9 @@ void MainWindow::removeActionSlot(){
 
 void MainWindow::addAttackSlot(){
 	//Disconnect sender to prevent spamming
-	if(sender()->objectName() != "monsterAttackName1"){
-		sender()->disconnect(addAttackConnect);
-	}
+    if(attackNames.count() > 0){
+        attackNames[attackNames.count()-1]->disconnect(addAttackConnect);
+    }
 
 	attackLayouts.append(new QFormLayout);
 	attackTypes.append(new QComboBox);
@@ -567,10 +500,10 @@ void MainWindow::addAttackSlot(){
 
 	//Setup dynamic UI creation
 	addAttackConnect = connect(attackNames[id],&QLineEdit::textChanged,this,&MainWindow::addAttackSlot);
-	if(id > 1){
-		attackNames[id-2]->disconnect(removeAttackConnect);
-	}
-	if(id > 0){
+    if(id > 1){
+        attackNames[id-2]->disconnect(removeAttackConnect);
+    }
+    if(id > 0){
 		removeAttackConnect = connect(attackNames[id-1],&QLineEdit::textChanged,this,&MainWindow::removeAttackSlot);
 	}
 }
@@ -635,38 +568,6 @@ void MainWindow::monsterAction_textChanged(const QString &text){
 		actionNames.removeLast();
 		actionDescriptions.removeLast();
 		actionLayouts.removeLast();
-	}
-}
-
-void MainWindow::on_monsterAttackName1_textChanged(const QString &arg1){
-	if(arg1 != "" && attackLayouts.count() == 0){
-		addAttackSlot();
-	}else if(arg1 == "" && attackLayouts.count() == 1 && attackNames.last()->text() == "" && attackReaches.last()->text() == "" &&
-			 attackRanges.last()->text() == "" && attackTargets.last()->text() == "" && attackModifiers.last()->text() == "" &&
-			 attackModifiers.last()->text() == "" && attackDamages.last()->text() == "" && attackPlusDamages.last()->text() == "" &&
-			 attackOrDamages.last()->text() == "" && attackOrDamageWhens.last()->text() == "" && attackExtras.last()->text() == ""){
-		removeLastAttack();
-	}
-}
-
-void MainWindow::on_monsterAttackDistance1_currentTextChanged(const QString &arg1){
-	if(arg1 == "Melee"){
-		ui->monsterAttackReach1->setVisible(true);
-		ui->label_attackReach1->setVisible(true);
-		ui->monsterAttackRange1->setVisible(false);
-		ui->label_attackRange1->setVisible(false);
-		ui->monsterAttackRange1->setText("");
-	}else if(arg1 == "Ranged"){
-		ui->monsterAttackReach1->setVisible(false);
-		ui->label_attackReach1->setVisible(false);
-		ui->monsterAttackRange1->setVisible(true);
-		ui->label_attackRange1->setVisible(true);
-		ui->monsterAttackReach1->setText("");
-	}else{
-		ui->monsterAttackReach1->setVisible(true);
-		ui->label_attackReach1->setVisible(true);
-		ui->monsterAttackRange1->setVisible(true);
-		ui->label_attackRange1->setVisible(true);
 	}
 }
 
