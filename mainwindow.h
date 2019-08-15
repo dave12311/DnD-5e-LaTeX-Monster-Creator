@@ -26,6 +26,15 @@ private:
 	Monster *monster;
 	InputData inputData;
 
+	//Traits
+	QList<QHBoxLayout*> traitLayouts;
+	QList<QLineEdit*> traitNames;
+	QList<QLineEdit*> traitDescriptions;
+	QMetaObject::Connection addTraitNameConnect;
+	QMetaObject::Connection addTraitDescConnect;
+	QMetaObject::Connection removeTraitNameConnect;
+	QMetaObject::Connection removeTraitDescConnect;
+
 	//Spells
 	QList<QHBoxLayout*> innateSpellLayouts;
 	QList<QSpinBox*> innateSpellSpinBoxes;
@@ -90,12 +99,16 @@ private:
 public slots:
 	//UI
 	void monsterAction_textChanged(const QString &text);
+	void monsterTrait_textChanged(const QString &text);
 
-	//Write text in the GUI
-	//TODO: change parameter
+	//Write output text in the GUI
 	void writeLatexOut(const QString &text);
 
 	void inputDataRequested();
+
+	//Traits
+	void addTraitSlot();
+	void removeTraitSlot();
 
 	//Spells
 	void addInnateSpellSlot();

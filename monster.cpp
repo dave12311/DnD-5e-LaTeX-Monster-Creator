@@ -7,6 +7,7 @@ Monster::~Monster(){}
 
 void InputData::clear(){
 	basicData.clear();
+	traits.clear();
 	innateSpellcasting.clear();
 	innateSpells.clear();
 	spellcasting.clear();
@@ -142,6 +143,17 @@ void Monster::updateLatex(){
 		latexString.append("\t]\n\n");
 	}
 
+	//Traits
+	for(int i = 0; i < inputData->traits.count(); i++){
+		if(inputData->traits[i].name != "" || inputData->traits[i].desc != ""){
+			latexString.append("\t\\DndMonsterAction{");
+			latexString.append(inputData->traits[i].name);
+			latexString.append("}\n\t");
+			latexString.append(inputData->traits[i].desc);
+			latexString.append("\n\n");
+		}
+	}
+
 	//Innate Spellcasting
 	if(inputData->innateSpellcasting != ""){
 		latexString.append("\t\\DndMonsterAction{Innate Spellcasting}\n\t");
@@ -192,7 +204,7 @@ void Monster::updateLatex(){
 	if(inputData->actions.count() > 1){
 		latexString.append("\t\\DndMonsterSection{Actions}\n");
 		for(int i = 0; i < inputData->actions.count(); i++){
-			if(inputData->actions[i].name != "" || inputData->actions[i].name != ""){
+			if(inputData->actions[i].name != "" || inputData->actions[i].desc != ""){
 				latexString.append("\t\\DndMonsterAction{");
 				latexString.append(inputData->actions[i].name);
 				latexString.append("}\n\t");

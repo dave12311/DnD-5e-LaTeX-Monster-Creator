@@ -50,9 +50,9 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>-235</y>
+           <y>-295</y>
            <width>549</width>
-           <height>740</height>
+           <height>809</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
@@ -609,6 +609,56 @@
             </item>
             <item>
              <widget class="Line" name="line_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="traits">
+              <item>
+               <widget class="QLabel" name="label_traits">
+                <property name="text">
+                 <string>Traits</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="traits_layout1" stretch="2,5">
+                <item>
+                 <widget class="QLineEdit" name="monsterTraitName1">
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Grappler</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="monsterTraitDesc1">
+                  <property name="font">
+                   <font>
+                    <italic>true</italic>
+                   </font>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Foo has advantage on attacks against creatures grappled by it.</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_7">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>

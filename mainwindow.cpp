@@ -9,11 +9,24 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
 		ui->setupUi(this);
 		monster = new Monster;
+
+		//Add first attack slot, set placeholders
 		addAttackSlot();
+		attackNames[0]->setPlaceholderText("Flame Tongue Longsword");
+		attackModifiers[0]->setPlaceholderText("+3");
+		attackReaches[0]->setPlaceholderText("5");
+		attackTargets[0]->setPlaceholderText("one target");
+		attackDamages[0]->setPlaceholderText("1d8+1");
+		attackPlusDamages[0]->setPlaceholderText("2d6");
+		attackOrDamages[0]->setPlaceholderText("1d10+1");
+		attackOrDamageWhens[0]->setPlaceholderText("if used with two hands");
 
 		//Connect GUI signals
 		connect(ui->monsterActionName1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
 		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
+
+		connect(ui->monsterTraitName1,&QLineEdit::textChanged,this,&MainWindow::monsterTrait_textChanged);
+		connect(ui->monsterTraitDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterTrait_textChanged);
 
 		//Connect signals to updateLatex()
 		connect(ui->monsterName,&QLineEdit::textChanged,monster,&Monster::updateLatex);
@@ -36,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		connect(ui->monsterSenses,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 		connect(ui->monsterLanguages,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 		connect(ui->monsterChallenge,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+
+		connect(ui->monsterTraitName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+		connect(ui->monsterTraitDesc1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
 		connect(ui->monsterInnateSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 		connect(ui->monsterSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
@@ -86,6 +102,18 @@ void MainWindow::inputDataRequested(){
 	inputData.basicData.append(ui->monsterSenses->text());
 	inputData.basicData.append(ui->monsterLanguages->text());
 	inputData.basicData.append(ui->monsterChallenge->text());
+
+	//Traits
+	Action tmpTrait;
+	tmpTrait.name = ui->monsterTraitName1->text();
+	tmpTrait.desc = ui->monsterTraitDesc1->text();
+	inputData.traits.append(tmpTrait);
+	for(int i = 0; i < traitLayouts.count(); i++){
+		tmpTrait.name = traitNames[i]->text();
+		tmpTrait.desc = traitDescriptions[i]->text();
+
+		inputData.traits.append(tmpTrait);
+	}
 
 	//Spells
 	Spell tmpSpell;
@@ -139,6 +167,79 @@ void MainWindow::inputDataRequested(){
 	}
 
 	emit sendInputData(&inputData);
+}
+
+void MainWindow::addTraitSlot(){
+	//Disconnect sender to prevent spamming
+	if(sender()->objectName() != "monsterTraitName1" && sender()->objectName() != "monsterTraitDesc1"){
+		sender()->disconnect(addTraitNameConnect);
+		sender()->disconnect(addTraitDescConnect);
+	}
+
+	traitLayouts.append(new QHBoxLayout);
+	traitNames.append(new QLineEdit);
+	traitDescriptions.append(new QLineEdit);
+	int id = traitLayouts.indexOf(traitLayouts.last());
+
+	//Set properties
+	traitNames[id]->setFont(QFont("Noto Sans", -1, QFont::Bold));
+	traitDescriptions[id]->setFont(QFont("Noto Sans", -1, -1, true));
+
+	//Update Latex
+	connect(traitNames[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(traitDescriptions[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
+
+	//Add new layout
+	ui->traits->addLayout(traitLayouts[id]);
+
+	//Add elements
+	traitLayouts[id]->addWidget(traitNames[id]);
+	traitLayouts[id]->addWidget(traitDescriptions[id]);
+
+	//Set stretch
+	traitLayouts[id]->setStretch(0, 2);
+	traitLayouts[id]->setStretch(1, 5);
+
+	//Scroll down
+	//Does not work if only called once?
+	QCoreApplication::processEvents();
+	QCoreApplication::processEvents();
+	ui->scrollArea->ensureWidgetVisible(traitNames[id]);
+
+	//Dynamic UI creation
+	addTraitNameConnect = connect(traitNames[id],&QLineEdit::textChanged,this,&MainWindow::addTraitSlot);
+	addTraitDescConnect = connect(traitDescriptions[id],&QLineEdit::textChanged,this,&MainWindow::addTraitSlot);
+	if(id > 1){
+		traitNames[id-2]->disconnect(removeTraitNameConnect);
+		traitDescriptions[id-2]->disconnect(removeTraitDescConnect);
+	}
+	if(id > 0){
+		removeTraitNameConnect = connect(traitNames[id-1],&QLineEdit::textChanged,this,&MainWindow::removeTraitSlot);
+		removeTraitDescConnect = connect(traitDescriptions[id-1],&QLineEdit::textChanged,this,&MainWindow::removeTraitSlot);
+	}
+}
+
+void MainWindow::removeTraitSlot(){
+	if(traitNames.at(traitNames.count()-2)->text() == "" && traitDescriptions.at(traitDescriptions.count()-2)->text() == ""){
+		traitNames.last()->deleteLater();
+		traitDescriptions.last()->deleteLater();
+		traitLayouts.last()->deleteLater();
+
+		traitNames.removeLast();
+		traitDescriptions.removeLast();
+		traitLayouts.removeLast();
+
+		addTraitNameConnect = connect(traitNames.last(),&QLineEdit::textChanged,this,&MainWindow::addTraitSlot);
+		addTraitDescConnect = connect(traitDescriptions.last(),&QLineEdit::textChanged,this,&MainWindow::addTraitSlot);
+		if(traitNames.count() == 1){
+			traitNames.last()->disconnect(removeTraitNameConnect);
+			traitDescriptions.last()->disconnect(removeTraitDescConnect);
+		}
+		if(traitNames.count() > 1){
+			removeTraitNameConnect = connect(traitNames.at(traitNames.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeTraitSlot);
+			removeTraitDescConnect = connect(traitDescriptions.at(traitDescriptions.count()-2),&QLineEdit::textChanged,this,&MainWindow::removeTraitSlot);
+		}
+	}
 }
 
 void MainWindow::addInnateSpellSlot(){
@@ -304,7 +405,7 @@ void MainWindow::addActionSlot(){
 
 	//Set properties
 	actionNames[id]->setFont(QFont("Noto Sans", -1, QFont::Bold));
-	actionDescriptions[id]->setFont(QFont("Noto Sans, -1, -1, true"));
+	actionDescriptions[id]->setFont(QFont("Noto Sans", -1, -1, true));
 
 	//Update Latex
 	connect(actionNames[id],&QLineEdit::textChanged,monster,&Monster::updateLatex);
@@ -334,7 +435,7 @@ void MainWindow::addActionSlot(){
 		actionNames[id-2]->disconnect(removeActionNameConnect);
 		actionDescriptions[id-2]->disconnect(removeActionDescConnect);
 	}
-	if(id>0){
+	if(id > 0){
 		removeActionNameConnect = connect(actionNames[id-1],&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
 		removeActionDescConnect = connect(actionDescriptions[id-1],&QLineEdit::textChanged,this,&MainWindow::removeActionSlot);
 	}
@@ -553,6 +654,21 @@ void MainWindow::on_monsterSpellcasting_textChanged(const QString &arg1){
 		spellComboBoxes.removeLast();
 		spellSpinBoxes.removeLast();
 		spellLayouts.removeLast();
+	}
+}
+
+void MainWindow::monsterTrait_textChanged(const QString &text){
+	if(text != "" && traitLayouts.count() == 0){
+		addTraitSlot();
+	}else if(traitLayouts.count() == 1 && traitNames.last()->text() == "" && traitDescriptions.last()->text() == "" &&
+			 ui->monsterTraitName1->text() == "" && ui->monsterTraitDesc1->text() == ""){
+		traitNames.last()->deleteLater();
+		traitDescriptions.last()->deleteLater();
+		traitLayouts.last()->deleteLater();
+
+		traitNames.removeLast();
+		traitDescriptions.removeLast();
+		traitLayouts.removeLast();
 	}
 }
 

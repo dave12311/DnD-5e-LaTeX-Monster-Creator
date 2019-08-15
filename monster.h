@@ -35,6 +35,8 @@ class InputData{
 public:
 	QList<QString> basicData;
 
+	QList<Action> traits;
+
 	QString innateSpellcasting;
 	QList<Spell> innateSpells;
 
