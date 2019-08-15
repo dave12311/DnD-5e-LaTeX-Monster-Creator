@@ -65,6 +65,8 @@ private:
 	QString latexString;
 	InputData *inputData;
 
+	QString dmgType(int n);
+
 public slots:
 	//Textbox changed, regenerate latex
 	void updateLatex();

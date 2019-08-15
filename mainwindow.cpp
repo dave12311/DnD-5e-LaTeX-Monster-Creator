@@ -9,7 +9,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
 		ui->setupUi(this);
 		monster = new Monster;
-        addAttackSlot();
+		addAttackSlot();
 
 		//Connect GUI signals
 		connect(ui->monsterActionName1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
@@ -129,7 +129,7 @@ void MainWindow::inputDataRequested(){
 		tmpAttack.targets = attackTargets[i]->text();
 		tmpAttack.modifier = attackModifiers[i]->text();
 		tmpAttack.damage = attackDamages[i]->text();
-		tmpAttack.damageTypeIndex = attackTypes[i]->currentIndex();
+		tmpAttack.damageTypeIndex = attackDamageTypes[i]->currentIndex();
 		tmpAttack.plusDamage = attackPlusDamages[i]->text();
 		tmpAttack.plusDamageTypeIndex = attackPlusDamageTypes[i]->currentIndex();
 		tmpAttack.orDamage = attackOrDamages[i]->text();
@@ -365,9 +365,9 @@ void MainWindow::removeActionSlot(){
 
 void MainWindow::addAttackSlot(){
 	//Disconnect sender to prevent spamming
-    if(attackNames.count() > 0){
-        attackNames[attackNames.count()-1]->disconnect(addAttackConnect);
-    }
+	if(attackNames.count() > 0){
+		attackNames[attackNames.count()-1]->disconnect(addAttackConnect);
+	}
 
 	attackLayouts.append(new QFormLayout);
 	attackTypes.append(new QComboBox);
@@ -483,13 +483,13 @@ void MainWindow::addAttackSlot(){
 	ui->attacks->addLayout(attackLayouts[id]);
 
 	//Add elements
-	attackLayouts[id]->addRow(attackTypeLabels[id] ,attackTypes[id]);
-	attackLayouts[id]->addRow(attackDistanceLabels[id], attackDistances[id]);
 	attackLayouts[id]->addRow(attackNameLabels[id], attackNames[id]);
+	attackLayouts[id]->addRow(attackDistanceLabels[id], attackDistances[id]);
+	attackLayouts[id]->addRow(attackTypeLabels[id] ,attackTypes[id]);
+	attackLayouts[id]->addRow(attackModifierLabels[id], attackModifiers[id]);
 	attackLayouts[id]->addRow(attackReachLabels[id], attackReaches[id]);
 	attackLayouts[id]->addRow(attackRangeLabels[id], attackRanges[id]);
 	attackLayouts[id]->addRow(attackTargetLabels[id], attackTargets[id]);
-	attackLayouts[id]->addRow(attackModifierLabels[id], attackModifiers[id]);
 	attackLayouts[id]->addRow(attackDamageLabels[id], attackDamages[id]);
 	attackLayouts[id]->addRow(attackDamageTypeLabels[id], attackDamageTypes[id]);
 	attackLayouts[id]->addRow(attackPlusDamageLabels[id], attackPlusDamages[id]);
@@ -500,10 +500,10 @@ void MainWindow::addAttackSlot(){
 
 	//Setup dynamic UI creation
 	addAttackConnect = connect(attackNames[id],&QLineEdit::textChanged,this,&MainWindow::addAttackSlot);
-    if(id > 1){
-        attackNames[id-2]->disconnect(removeAttackConnect);
-    }
-    if(id > 0){
+	if(id > 1){
+		attackNames[id-2]->disconnect(removeAttackConnect);
+	}
+	if(id > 0){
 		removeAttackConnect = connect(attackNames[id-1],&QLineEdit::textChanged,this,&MainWindow::removeAttackSlot);
 	}
 }
