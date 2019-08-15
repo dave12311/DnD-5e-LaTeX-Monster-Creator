@@ -212,6 +212,8 @@ void Monster::updateLatex(){
 				latexString.append("\n\n");
 			}
 		}
+	}else if(inputData->attacks.count() > 1 || inputData->attacks.first().name != ""){
+		latexString.append("\t\\DndMonsterSection{Actions}\n");
 	}
 
 	//Attacks
