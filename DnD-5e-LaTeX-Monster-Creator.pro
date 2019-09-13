@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        dynamicui.cpp \
         main.cpp \
         mainwindow.cpp \
         monster.cpp
 
 HEADERS += \
+        dynamicui.h \
         mainwindow.h \
         monster.h
 
