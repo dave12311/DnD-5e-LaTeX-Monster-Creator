@@ -5,10 +5,13 @@
 #include <QLayout>
 #include <QSpinBox>
 #include <QLine>
+#include "dynamicui.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
 		ui->setupUi(this);
 		monster = new Monster;
+
+        Traits trait(ui);
 
 		//Add first attack slot, set placeholders
 		addAttackSlot();

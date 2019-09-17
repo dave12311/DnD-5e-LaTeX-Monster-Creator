@@ -14,6 +14,8 @@ namespace Ui {
 	class MainWindow;
 }
 
+class Traits;
+
 class MainWindow : public QMainWindow{
 	Q_OBJECT
 
@@ -27,13 +29,14 @@ private:
 	InputData inputData;
 
 	//Traits
-	QList<QHBoxLayout*> traitLayouts;
-	QList<QLineEdit*> traitNames;
-	QList<QLineEdit*> traitDescriptions;
-	QMetaObject::Connection addTraitNameConnect;
-	QMetaObject::Connection addTraitDescConnect;
-	QMetaObject::Connection removeTraitNameConnect;
-	QMetaObject::Connection removeTraitDescConnect;
+
+    QList<QHBoxLayout*> traitLayouts;
+    QList<QLineEdit*> traitNames;
+    QList<QLineEdit*> traitDescriptions;
+    QMetaObject::Connection addTraitNameConnect;
+    QMetaObject::Connection addTraitDescConnect;
+    QMetaObject::Connection removeTraitNameConnect;
+    QMetaObject::Connection removeTraitDescConnect;
 
 	//Spells
 	QList<QHBoxLayout*> innateSpellLayouts;
