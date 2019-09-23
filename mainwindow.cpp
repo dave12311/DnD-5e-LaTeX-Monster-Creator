@@ -2,12 +2,10 @@
 #include "ui_mainwindow.h"
 #include <QObject>
 #include <QWidget>
-#include <QLayout>
-#include <QSpinBox>
 #include <QLine>
 #include "dynamicui.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui_MainWindow){
 		ui->setupUi(this);
 		monster = new Monster;
 

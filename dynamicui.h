@@ -2,14 +2,14 @@
 #define DYNAMICUI_H
 
 #include <QObject>
-#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 class DynamicUI : public QObject{
     Q_OBJECT
 public:
-    DynamicUI(Ui::MainWindow *uip) : UI(uip) {}
+    DynamicUI(Ui_MainWindow *uip) : UI(uip) {}
 protected:
-    Ui::MainWindow *UI;
+    Ui_MainWindow *UI;
 
     QList<QObject*> Layouts;
     QList< QList<QObject*> > Objects;
@@ -22,11 +22,11 @@ protected:
 
 class Traits : public DynamicUI{
 public:
-    Traits(Ui::MainWindow *uip);
+    Traits(Ui_MainWindow *uip);
     void setProperties() override;
     void setFirstProperties() override;
 private:
-        enum objectTypes{Names, Descriptions};
+    enum objectTypes{Names, Descriptions};
 };
 
 #endif // DYNAMICUI_H
