@@ -6,71 +6,71 @@
 #include "dynamicui.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui_MainWindow){
-		ui->setupUi(this);
-		monster = new Monster;
+	ui->setupUi(this);
+	monster = new Monster;
 
-		auto trait = new Traits(ui);
+	auto trait = new Traits(ui);
 
-		delete trait;
-		trait = nullptr;
+	delete trait;
+	trait = nullptr;
 
-		//Add first attack slot, set placeholders
-		addAttackSlot();
-		attackNames[0]->setPlaceholderText("Flame Tongue Longsword");
-		attackModifiers[0]->setPlaceholderText("+3");
-		attackReaches[0]->setPlaceholderText("5");
-		attackTargets[0]->setPlaceholderText("one target");
-		attackDamages[0]->setPlaceholderText("1d8+1");
-		attackPlusDamages[0]->setPlaceholderText("2d6");
-		attackOrDamages[0]->setPlaceholderText("1d10+1");
-		attackOrDamageWhens[0]->setPlaceholderText("if used with two hands");
+	//Add first attack slot, set placeholders
+	addAttackSlot();
+	attackNames[0]->setPlaceholderText("Flame Tongue Longsword");
+	attackModifiers[0]->setPlaceholderText("+3");
+	attackReaches[0]->setPlaceholderText("5");
+	attackTargets[0]->setPlaceholderText("one target");
+	attackDamages[0]->setPlaceholderText("1d8+1");
+	attackPlusDamages[0]->setPlaceholderText("2d6");
+	attackOrDamages[0]->setPlaceholderText("1d10+1");
+	attackOrDamageWhens[0]->setPlaceholderText("if used with two hands");
 
-		//Connect GUI signals
-		connect(ui->monsterActionName1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
-		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
+	//Connect GUI signals
+	connect(ui->monsterActionName1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
+	connect(ui->monsterActionDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterAction_textChanged);
 
-		connect(ui->monsterTraitName1,&QLineEdit::textChanged,this,&MainWindow::monsterTrait_textChanged);
-		connect(ui->monsterTraitDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterTrait_textChanged);
+	connect(ui->monsterTraitName1,&QLineEdit::textChanged,this,&MainWindow::monsterTrait_textChanged);
+	connect(ui->monsterTraitDesc1,&QLineEdit::textChanged,this,&MainWindow::monsterTrait_textChanged);
 
-		//Connect signals to updateLatex()
-		connect(ui->monsterName,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterType,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterAC,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterHP,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterSpeed,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterSTR,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterDEX,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterCON,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterINT,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterWIS,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterCHA,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterSavingThrows,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterSkills,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterDamageVulnerabilities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterDamageResistances,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterDamageImmunities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterConditionImmunities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterSenses,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterLanguages,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterChallenge,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	//Connect signals to updateLatex()
+	connect(ui->monsterName,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterType,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterAC,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterHP,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterSpeed,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterSTR,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterDEX,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterCON,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterINT,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterWIS,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterCHA,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterSavingThrows,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterSkills,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterDamageVulnerabilities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterDamageResistances,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterDamageImmunities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterConditionImmunities,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterSenses,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterLanguages,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterChallenge,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
-		connect(ui->monsterTraitName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterTraitDesc1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterTraitName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterTraitDesc1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
-		connect(ui->monsterInnateSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterInnateSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterSpellcasting,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
-		connect(ui->monsterActionName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
-		connect(ui->monsterActionDesc1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterActionName1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
+	connect(ui->monsterActionDesc1,&QLineEdit::textChanged,monster,&Monster::updateLatex);
 
-		//Request input box data
-		connect(monster,&Monster::requestInputData,this,&MainWindow::inputDataRequested);
+	//Request input box data
+	connect(monster,&Monster::requestInputData,this,&MainWindow::inputDataRequested);
 
-		//Send input data
-		connect(this,&MainWindow::sendInputData,monster,&Monster::receiveInputData);
+	//Send input data
+	connect(this,&MainWindow::sendInputData,monster,&Monster::receiveInputData);
 
-		//Connect functions to display text in the GUI
-		connect(monster,&Monster::sendText,this,&MainWindow::writeLatexOut);
+	//Connect functions to display text in the GUI
+	connect(monster,&Monster::sendText,this,&MainWindow::writeLatexOut);
 }
 
 MainWindow::~MainWindow(){
@@ -617,7 +617,7 @@ void MainWindow::addAttackSlot(){
 }
 
 void MainWindow::removeAttackSlot(){
-    if(attackNames.at(attackNames.count()-2)->text() == "" && checkLastLineEditEmpty(attackNames) && checkLastLineEditEmpty(attackReaches) && checkLastLineEditEmpty(attackRanges) &&
+	if(attackNames.at(attackNames.count()-2)->text() == "" && checkLastLineEditEmpty(attackNames) && checkLastLineEditEmpty(attackReaches) && checkLastLineEditEmpty(attackRanges) &&
 			checkLastLineEditEmpty(attackTargets) && checkLastLineEditEmpty(attackModifiers) && checkLastLineEditEmpty(attackDamages) &&
 			checkLastLineEditEmpty(attackPlusDamages) && checkLastLineEditEmpty(attackOrDamages) && checkLastLineEditEmpty(attackOrDamageWhens) &&
 			checkLastLineEditEmpty(attackExtras)){

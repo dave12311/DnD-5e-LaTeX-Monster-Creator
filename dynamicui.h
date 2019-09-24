@@ -5,29 +5,29 @@
 #include "ui_mainwindow.h"
 
 class DynamicUI : public QObject {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    DynamicUI(Ui_MainWindow *uip) : UI(uip) {}
+	DynamicUI(Ui_MainWindow *uip) : UI(uip) {}
 	~DynamicUI();
 protected:
-    Ui_MainWindow *UI;
+	Ui_MainWindow *UI;
 
-    QList<QObject*> Layouts;
-    QList< QList<QObject*> > Objects;
+	QList<QObject*> Layouts;
+	QList< QList<QObject*> > Objects;
 
-    QList< QList<QMetaObject::Connection> > addConnections, removeConnections;
+	QList< QList<QMetaObject::Connection> > addConnections, removeConnections;
 
-    virtual void setProperties() = 0;
-    virtual void setFirstProperties() = 0;
+	virtual void setProperties() = 0;
+	virtual void setFirstProperties() = 0;
 };
 
 class Traits : public DynamicUI {
 public:
-    Traits(Ui_MainWindow *uip);
-    void setProperties() override;
-    void setFirstProperties() override;
+	Traits(Ui_MainWindow *uip);
+	void setProperties() override;
+	void setFirstProperties() override;
 private:
-    enum objectTypes{Names, Descriptions};
+	enum objectTypes{Names, Descriptions};
 };
 
 #endif // DYNAMICUI_H
