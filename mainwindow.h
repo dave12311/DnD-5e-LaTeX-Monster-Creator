@@ -11,7 +11,7 @@
 #include "monster.h"
 #include "ui_mainwindow.h"
 
-class MainWindow : public QMainWindow{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -20,7 +20,7 @@ public:
 
 private:
     Ui_MainWindow *ui;
-    Monster *monster;
+	Monster *monster;
     InputData inputData;
 
     //Traits

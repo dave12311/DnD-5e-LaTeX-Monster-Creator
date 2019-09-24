@@ -1,9 +1,4 @@
 #include "monster.h"
-#include <string.h>
-
-Monster::Monster(){}
-
-Monster::~Monster(){}
 
 void InputData::clear(){
 	basicData.clear();

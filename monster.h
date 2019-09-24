@@ -3,18 +3,18 @@
 
 #include <QObject>
 
-struct Spell{
+struct Spell {
 	QString name;
 	int levelIndex;
 	int num;
 };
 
-struct Action{
+struct Action {
 	QString name;
 	QString desc;
 };
 
-struct Attack{
+struct Attack {
 	int typeIndex;
 	int distanceIndex;
 	QString name;
@@ -31,7 +31,7 @@ struct Attack{
 	QString extra;
 };
 
-class InputData{
+class InputData {
 public:
 	QList<QString> basicData;
 
@@ -50,18 +50,14 @@ public:
 	void clear();
 };
 
-enum monsterEnum{
+enum monsterEnum {
 	monsterName, monsterType, monsterAC, monsterHP, monsterSpeed, monsterSTR, monsterDEX, monsterCON, monsterINT, monsterWIS, monsterCHA,
 	monsterSavingThrows, monsterSkills, monsterDamageVulnerabilities, monsterDamageResistances, monsterDamageImmunities,
 	monsterConditionImmunities, monsterSenses, monsterLanguages, monsterChallenge
 };
 
-class Monster : public QObject{
+class Monster : public QObject {
 	Q_OBJECT
-
-public:
-	Monster();
-	~Monster();
 
 private:
 	QString latexString;

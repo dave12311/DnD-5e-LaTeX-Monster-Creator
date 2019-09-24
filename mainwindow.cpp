@@ -9,7 +9,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui_MainWin
 		ui->setupUi(this);
 		monster = new Monster;
 
-        Traits trait(ui);
+		auto trait = new Traits(ui);
+
+		delete trait;
+		trait = nullptr;
 
 		//Add first attack slot, set placeholders
 		addAttackSlot();
@@ -72,6 +75,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui_MainWin
 
 MainWindow::~MainWindow(){
 	delete ui;
+	ui = nullptr;
+	delete monster;
+	monster = nullptr;
 }
 
 void MainWindow::writeLatexOut(const QString &text){
@@ -673,11 +679,11 @@ void MainWindow::monsterTrait_textChanged(const QString &text){
 	}
 }
 
-void MainWindow::monsterAction_textChanged(const QString &text){
-	if(text != "" && actionLayouts.count() == 0){
+void MainWindow::monsterAction_textChanged(const QString &text) {
+	if(text != "" && actionLayouts.count() == 0) {
 		addActionSlot();
-	}else if(actionLayouts.count() == 1 && actionNames.last()->text() == "" && actionDescriptions.last()->text() == "" &&
-			 ui->monsterActionName1->text() == "" && ui->monsterActionDesc1->text() == ""){
+	} else if(actionLayouts.count() == 1 && actionNames.last()->text() == "" && actionDescriptions.last()->text() == "" &&
+			 ui->monsterActionName1->text() == "" && ui->monsterActionDesc1->text() == "") {
 		actionNames.last()->deleteLater();
 		actionDescriptions.last()->deleteLater();
 		actionLayouts.last()->deleteLater();
@@ -688,32 +694,32 @@ void MainWindow::monsterAction_textChanged(const QString &text){
 	}
 }
 
-void MainWindow::spellComboBoxChange(){
-	for(int i = 0; i < spellLayouts.count(); i++){
-		if(spellComboBoxes[i]->currentIndex() == 0){
+void MainWindow::spellComboBoxChange() {
+	for(int i = 0; i < spellLayouts.count(); i++) {
+		if(spellComboBoxes[i]->currentIndex() == 0) {
 			spellSpinBoxes[i]->setVisible(false);
-		}else{
+		} else {
 			spellSpinBoxes[i]->setValue(0);
 			spellSpinBoxes[i]->setVisible(true);
 		}
 	}
 }
 
-void MainWindow::attackDistanceBoxChange(){
-	for(int i = 0; i < attackLayouts.count(); i++){
-		if(attackDistances[i]->currentIndex() == 0){
+void MainWindow::attackDistanceBoxChange() {
+	for(int i = 0; i < attackLayouts.count(); i++) {
+		if(attackDistances[i]->currentIndex() == 0) {
 			attackReachLabels[i]->setVisible(true);
 			attackReaches[i]->setVisible(true);
 			attackRangeLabels[i]->setVisible(false);
 			attackRanges[i]->setVisible(false);
 			attackRanges[i]->setText("");
-		}else if(attackDistances[i]->currentIndex() == 1){
+		} else if(attackDistances[i]->currentIndex() == 1) {
 			attackReachLabels[i]->setVisible(false);
 			attackReaches[i]->setVisible(false);
 			attackRangeLabels[i]->setVisible(true);
 			attackRanges[i]->setVisible(true);
 			attackReaches[i]->setText("");
-		}else{
+		} else {
 			attackReachLabels[i]->setVisible(true);
 			attackReaches[i]->setVisible(true);
 			attackRangeLabels[i]->setVisible(true);
@@ -723,7 +729,7 @@ void MainWindow::attackDistanceBoxChange(){
 }
 
 
-void MainWindow::removeLastAttack(){
+void MainWindow::removeLastAttack() {
 	attackTypes.last()->deleteLater();
 	attackDistances.last()->deleteLater();
 	attackNames.last()->deleteLater();
@@ -787,10 +793,10 @@ void MainWindow::removeLastAttack(){
 	attackLayouts.removeLast();
 }
 
-bool MainWindow::checkLastLineEditEmpty(QList<QLineEdit*> &list){
-	if(list.at(list.count()-1)->text() == ""){
+bool MainWindow::checkLastLineEditEmpty(QList<QLineEdit*> &list) {
+	if(list.at(list.count()-1)->text() == "") {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }

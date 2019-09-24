@@ -4,10 +4,11 @@
 #include <QObject>
 #include "ui_mainwindow.h"
 
-class DynamicUI : public QObject{
+class DynamicUI : public QObject {
     Q_OBJECT
 public:
     DynamicUI(Ui_MainWindow *uip) : UI(uip) {}
+	~DynamicUI();
 protected:
     Ui_MainWindow *UI;
 
@@ -20,7 +21,7 @@ protected:
     virtual void setFirstProperties() = 0;
 };
 
-class Traits : public DynamicUI{
+class Traits : public DynamicUI {
 public:
     Traits(Ui_MainWindow *uip);
     void setProperties() override;
