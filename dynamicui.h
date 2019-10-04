@@ -4,29 +4,35 @@
 #include <QObject>
 #include "ui_mainwindow.h"
 
+class UI_Element : public QObject {
+public:
+    QObject *Layout;
+    QList<QObject*> Objects;
+    QList<QMetaObject::Connection> createConnections, destroyConnections;
+    UI_Element *destroyThis;
+public slots:
+    void createElement();
+    void destroyElement();
+};
+
 class DynamicUI : public QObject {
 	Q_OBJECT
 public:
     DynamicUI(Ui_MainWindow *uip);
-	~DynamicUI();
 protected:
     //Pointer to main UI object
 	Ui_MainWindow *UI;
 
-	QList<QObject*> Layouts;
-	QList< QList<QObject*> > Objects;
+    QList<UI_Element> Elements;
 
-	QList< QList<QMetaObject::Connection> > addConnections, removeConnections;
+    //Index of last accessed elements
+    int lastIndex;
 
     //Connect UI element updates to addSlot()
     void createUpdateConnections();
 
 	virtual void setProperties() = 0;
 	virtual void setFirstProperties() = 0;
-
-public slots:
-    virtual void addSlot();
-    virtual void removeSlot();
 };
 
 class Traits : public DynamicUI {
@@ -35,7 +41,7 @@ public:
 	void setProperties() override;
 	void setFirstProperties() override;
 private:
-	enum objectTypes{Names, Descriptions};
+    enum objectTypes{Name, Description};
 };
 
 #endif // DYNAMICUI_H

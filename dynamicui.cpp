@@ -6,70 +6,57 @@ DynamicUI::DynamicUI(Ui_MainWindow *uip) : UI(uip){
     //Empty constructor
 }
 
-DynamicUI::~DynamicUI() {
-	//Free Layouts
-	for(int i=0; i < Layouts.count(); i++){
-		delete Layouts[i];
-	}
-	Layouts.clear();
-
-	//Free Objects
-	for(int i=0; i < Objects.count(); i++){
-		for(int j=0; j < Objects[i].count(); j++){
-			delete Objects[i][j];
-		}
-	}
-	Objects.clear();
-}
-
 void DynamicUI::createUpdateConnections(){
-    //Create inner list
+    //Create temporary inner list
     QList<QMetaObject::Connection> tempList;
 
     //TODO: Iterate elements and create connections
+    for(int i=0; i < Elements.last().Objects.count(); i++){
 
-}
-
-void DynamicUI::addSlot(){
-
-}
-
-void DynamicUI::removeSlot(){
-
+    }
 }
 
 Traits::Traits(Ui_MainWindow *uip) : DynamicUI(uip) {
-	//Create all objects and layouts
-	QList<QObject*> list1, list2;
-	auto *layout = new QHBoxLayout;
-	auto *name = new QLineEdit;
-	auto *description = new QLineEdit;
+    //Build element
+    UI_Element tempElement;
 
-	//Add objects to layouts
-	layout->addWidget(name);
-	layout->addWidget(description);
+    auto layout = new QHBoxLayout;
+    QLineEdit name, desc;
+    QList<QObject*> list;
 
-	//Add everything to object variables
-	Layouts.append(layout);
-	Objects.append(list1);
-	Objects[0].append(name);
-	Objects.append(list2);
-	Objects[1].append(description);
+    layout->addWidget(&name);
+    layout->addWidget(&desc);
+
+    tempElement.Layout = layout;
+    tempElement.Objects = list;
+    tempElement.Objects.append(&name);
+    tempElement.Objects.append(&desc);
+
+    Elements.append(tempElement);
+
+    //Set lastIndex
+    lastIndex = 0;
 
 	//Set properties of the first element
 	setFirstProperties();
 }
 
 void Traits::setProperties() {
-	static_cast<QLineEdit*>(Objects[Names].last())->setFont(QFont("Noto Sans", -1, QFont::Bold));
-	static_cast<QLineEdit*>(Objects[Descriptions].last())->setFont(QFont("Noto Sans", -1, -1, true));
-	static_cast<QHBoxLayout*>(Layouts.last())->setStretch(0,2);
-	static_cast<QHBoxLayout*>(Layouts.last())->setStretch(1,5);
+    static_cast<QLineEdit*>(Elements.last().Objects.at(Name))->setFont(QFont("Noto Sans", -1, QFont::Bold));
+    static_cast<QLineEdit*>(Elements.last().Objects.at(Description))->setFont(QFont("Noto Sans", -1, -1, true));
+    static_cast<QHBoxLayout*>(Elements.last().Layout)->setStretch(0,2);
+    static_cast<QHBoxLayout*>(Elements.last().Layout)->setStretch(1,5);
 }
 
 void Traits::setFirstProperties() {
 	setProperties();
-	static_cast<QLineEdit*>(Objects[Names].first())->setPlaceholderText("Grappler");
-	static_cast<QLineEdit*>(Objects[Descriptions].first())->setPlaceholderText("Foo has advantage on attacks against creatures grappled by it.");
-	UI->traits->addLayout(static_cast<QHBoxLayout*>(Layouts.first()));
+    static_cast<QLineEdit*>(Elements.first().Objects.at(Name))->setPlaceholderText("Grappler");
+    static_cast<QLineEdit*>(Elements.first().Objects.at(Description))->setPlaceholderText(
+                "Foo has advantage on attacks against creatures grappled by it.");
+
+    //Add layout to UI
+    UI->traits->addLayout(static_cast<QHBoxLayout*>(Elements.first().Layout));
+
+    //Connect first create segnal
+    createUpdateConnections();
 }
