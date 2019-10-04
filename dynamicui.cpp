@@ -2,6 +2,10 @@
 #include <QLayout>
 #include <QLineEdit>
 
+DynamicUI::DynamicUI(Ui_MainWindow *uip) : UI(uip){
+    //Empty constructor
+}
+
 DynamicUI::~DynamicUI() {
 	//Free Layouts
 	for(int i=0; i < Layouts.count(); i++){
@@ -16,6 +20,22 @@ DynamicUI::~DynamicUI() {
 		}
 	}
 	Objects.clear();
+}
+
+void DynamicUI::createUpdateConnections(){
+    //Create inner list
+    QList<QMetaObject::Connection> tempList;
+
+    //TODO: Iterate elements and create connections
+
+}
+
+void DynamicUI::addSlot(){
+
+}
+
+void DynamicUI::removeSlot(){
+
 }
 
 Traits::Traits(Ui_MainWindow *uip) : DynamicUI(uip) {
