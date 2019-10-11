@@ -5,6 +5,7 @@
 #include "ui_mainwindow.h"
 
 class UI_Element : public QObject {
+    Q_OBJECT
 public:
     QObject *Layout;
     QList<QObject*> Objects;
@@ -23,7 +24,7 @@ protected:
     //Pointer to main UI object
 	Ui_MainWindow *UI;
 
-    QList<UI_Element> Elements;
+    QList<UI_Element*> Elements;
 
     //Index of last accessed elements
     int lastIndex;

@@ -2,6 +2,14 @@
 #include <QLayout>
 #include <QLineEdit>
 
+void UI_Element::createElement(){
+
+}
+
+void UI_Element::destroyElement(){
+
+}
+
 DynamicUI::DynamicUI(Ui_MainWindow *uip) : UI(uip){
     //Empty constructor
 }
@@ -11,9 +19,9 @@ void DynamicUI::createUpdateConnections(){
     QList<QMetaObject::Connection> tempList;
 
     //TODO: Iterate elements and create connections
-    for(int i=0; i < Elements.last().Objects.count(); i++){
+    //for(int i=0; i < Elements.last().Objects.count(); i++){
 
-    }
+    //}
 }
 
 Traits::Traits(Ui_MainWindow *uip) : DynamicUI(uip) {
@@ -32,7 +40,7 @@ Traits::Traits(Ui_MainWindow *uip) : DynamicUI(uip) {
     tempElement.Objects.append(&name);
     tempElement.Objects.append(&desc);
 
-    Elements.append(tempElement);
+    Elements.append(&tempElement);
 
     //Set lastIndex
     lastIndex = 0;
@@ -42,20 +50,20 @@ Traits::Traits(Ui_MainWindow *uip) : DynamicUI(uip) {
 }
 
 void Traits::setProperties() {
-    static_cast<QLineEdit*>(Elements.last().Objects.at(Name))->setFont(QFont("Noto Sans", -1, QFont::Bold));
-    static_cast<QLineEdit*>(Elements.last().Objects.at(Description))->setFont(QFont("Noto Sans", -1, -1, true));
-    static_cast<QHBoxLayout*>(Elements.last().Layout)->setStretch(0,2);
-    static_cast<QHBoxLayout*>(Elements.last().Layout)->setStretch(1,5);
+    static_cast<QLineEdit*>(Elements.last()->Objects.at(Name))->setFont(QFont("Noto Sans", -1, QFont::Bold));
+    static_cast<QLineEdit*>(Elements.last()->Objects.at(Description))->setFont(QFont("Noto Sans", -1, -1, true));
+    static_cast<QHBoxLayout*>(Elements.last()->Layout)->setStretch(0,2);
+    static_cast<QHBoxLayout*>(Elements.last()->Layout)->setStretch(1,5);
 }
 
 void Traits::setFirstProperties() {
 	setProperties();
-    static_cast<QLineEdit*>(Elements.first().Objects.at(Name))->setPlaceholderText("Grappler");
-    static_cast<QLineEdit*>(Elements.first().Objects.at(Description))->setPlaceholderText(
+    static_cast<QLineEdit*>(Elements.first()->Objects.at(Name))->setPlaceholderText("Grappler");
+    static_cast<QLineEdit*>(Elements.first()->Objects.at(Description))->setPlaceholderText(
                 "Foo has advantage on attacks against creatures grappled by it.");
 
     //Add layout to UI
-    UI->traits->addLayout(static_cast<QHBoxLayout*>(Elements.first().Layout));
+    UI->traits->addLayout(static_cast<QHBoxLayout*>(Elements.first()->Layout));
 
     //Connect first create segnal
     createUpdateConnections();
