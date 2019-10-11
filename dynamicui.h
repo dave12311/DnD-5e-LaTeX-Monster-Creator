@@ -38,7 +38,7 @@ protected:
 
 class Traits : public DynamicUI {
 public:
-	Traits(Ui_MainWindow *uip);
+    Traits(Ui_MainWindow *uip);
 	void setProperties() override;
 	void setFirstProperties() override;
 private:

@@ -18,10 +18,15 @@ void DynamicUI::createUpdateConnections(){
     //Create temporary inner list
     QList<QMetaObject::Connection> tempList;
 
-    //TODO: Iterate elements and create connections
-    //for(int i=0; i < Elements.last().Objects.count(); i++){
-
-    //}
+    const int elementCount = Elements.last()->Objects.count();
+    QString className;
+    for(int i=0; i < elementCount; i++){
+        className = Elements.last()->Objects[i]->metaObject()->className();
+        if(className == "QLineEdit"){
+            //TODO: Iterate elements and create connections
+            //Elements.last()->createConnections.append(connect());
+        }
+    }
 }
 
 Traits::Traits(Ui_MainWindow *uip) : DynamicUI(uip) {
